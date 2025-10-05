@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spendiva - Smart Travel Expense Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="logo.png" type="image/x-icon">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
+    header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    header h1 { margin: 0; font-size: 20px; display: flex; align-items: center; }
+    header h1 span { font-size: 24px; margin-right: 10px; }
+    nav a { color: white; margin: 0 10px; text-decoration: none; font-weight: 600; transition: opacity 0.3s; }
+    nav a:hover { opacity: 0.8; text-decoration: underline; }
+    .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    h2 { color: #222; font-size: 2em; margin-bottom: 20px; }
+    h3 { color: #059669; margin-top: 30px; font-size: 1.4em; }
+    ul { margin-left: 20px; line-height: 2; }
+    ul li { margin-bottom: 8px; }
+    a.button { display: inline-block; padding: 12px 30px; margin: 20px 0; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transition: transform 0.3s, box-shadow 0.3s; }
+    a.button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6); }
+    .hidden { display: none; }
+    footer { text-align: center; padding: 20px; font-size: 0.9em; color: #555; border-top: 1px solid #ccc; margin-top: 40px; }
+    select { padding: 8px 12px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); color: white; font-weight: 600; cursor: pointer; }
+    select option { color: #333; }
+    .faq-item { margin-bottom: 25px; background: #f0fdf4; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981; }
+    .faq-item strong { color: #059669; font-size: 1.1em; display: block; margin-bottom: 10px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0; }
+    .feature-card { background: #f0fdf4; padding: 20px; border-radius: 10px; border: 2px solid #d1fae5; }
+    .feature-card h4 { color: #059669; margin-top: 0; }
+    .note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; border-radius: 5px; }
+    .note strong { color: #92400e; }
+  </style>
+  
+<script>
+  function switchLanguage(lang) {
+    document.querySelectorAll('.lang').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.lang-' + lang).forEach(el => el.classList.remove('hidden'));
+    document.getElementById('lang-selector').value = lang;
+  }
+
+  function showSection(section) {
+    document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
+    const target = document.getElementById(section);
+    if (target) target.classList.remove('hidden');
+  }
+
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  window.onload = function() {
+    const hash = window.location.hash.substring(1);
+    const lang = getQueryParam('lang');
+
+    if (hash === 'privacy') showSection('privacy');
+    else if (hash === 'support') showSection('support');
+    else showSection('home');
+    
+    switchLanguage(lang === 'de' || lang === 'es' ? lang : 'en');
+  }
+</script>
+
+</head>
+<body>
+  <header>
+    <h1>
+      <span>✈️</span>
+      Spendiva
+    </h1>
+    <nav>
+      <a href="#home" onclick="showSection('home')">Home</a>
+      <a href="#support" onclick="showSection('support')">Support</a>
+      <a href="#privacy" onclick="showSection('privacy')">Privacy Policy</a>
+    </nav>
+    <div>
+      <select id="lang-selector" onchange="switchLanguage(this.value)">
+        <option value="en" selected>English</option>
+        <option value="de">Deutsch</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- HOME SECTION -->
+    <div id="home" class="section">
+
+      <!-- English -->
+      <div class="lang lang-en">
+        <h2>Spendiva - Smart Travel Expense Tracker</h2>
+        <p>Track your travel expenses effortlessly. Perfect for organizing trip spending, splitting costs with travel companions, and managing multiple currencies across different destinations.</p>
+        
+        <h3>Why Choose Spendiva?</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>Quick Entry</h4>
+            <p>Add expenses in under 3 seconds with our intuitive category-first design and custom numerical keyboard.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Multi-Currency Support</h4>
+            <p>Track expenses in 190+ currencies with automatic exchange rate conversion to your home currency.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Cost Splitting</h4>
+            <p>Easily split expenses among travel companions and track per-person costs automatically.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Trip Organization</h4>
+            <p>Manage multiple trips simultaneously with dedicated expense tracking for each destination.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Detailed Reports</h4>
+            <p>View daily, weekly, and monthly breakdowns with category analysis and spending trends.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Multilingual</h4>
+            <p>Full support for English, Spanish, and German with localized date and currency formatting.</p>
+          </div>
+        </div>
+
+        <h3>Perfect For</h3>
+        <ul>
+          <li>Solo travelers tracking vacation budgets</li>
+          <li>Groups splitting costs on trips</li>
+          <li>Business travelers managing expense reports</li>
+          <li>Digital nomads working across multiple countries</li>
+          <li>Families budgeting for holiday expenses</li>
+          <li>Anyone traveling internationally with multiple currencies</li>
+        </ul>
+
+        <h3>Key Features</h3>
+        <ul>
+          <li><strong>Fast Expense Entry:</strong> Category selection, amount, split, and save in seconds</li>
+          <li><strong>Expense Categories:</strong> Meals, Transport, Stay, Fun, Coffee, Shopping with custom subcategories</li>
+          <li><strong>People Splitting:</strong> Track who shared each expense and calculate per-person costs</li>
+          <li><strong>Date Flexibility:</strong> Add expenses for today, yesterday, or any custom date</li>
+          <li><strong>Trip Management:</strong> Create, edit, and archive trips with date ranges and purposes</li>
+          <li><strong>Currency Conversion:</strong> Support for 190+ world currencies with exchange rates</li>
+          <li><strong>Analytics Dashboard:</strong> Daily, weekly, and monthly spending reports</li>
+          <li><strong>Category Breakdown:</strong> See spending patterns by category with visual charts</li>
+          <li><strong>Notes & Details:</strong> Add notes and subcategories to track expense details</li>
+          <li><strong>Export Data:</strong> Export expense data to CSV for further analysis</li>
+          <li><strong>Privacy First:</strong> All data stored locally on your device, no cloud sync required</li>
+        </ul>
+
+        <div class="note">
+          <strong>Note:</strong> Spendiva is designed for travelers who want to focus on their journey, not their spreadsheets. Quick entry, smart organization, and detailed insights when you need them.
+        </div>
+
+        <a href="https://apps.apple.com/app/spendiva/id[YOUR_APP_ID]" class="button">Download on the App Store</a>
+      </div>
+
+      <!-- German -->
+      <div class="lang lang-de hidden">
+        <h2>Spendiva - Intelligenter Reise-Ausgaben-Tracker</h2>
+        <p>Verfolgen Sie Ihre Reiseausgaben mühelos. Perfekt für die Organisation von Reiseausgaben, das Aufteilen von Kosten mit Reisebegleitern und die Verwaltung mehrerer Währungen an verschiedenen Reisezielen.</p>
+        
+        <h3>Warum Spendiva Wählen?</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>Schnelle Eingabe</h4>
+            <p>Fügen Sie Ausgaben in unter 3 Sekunden hinzu mit unserem intuitiven kategorie-ersten Design und angepasster numerischer Tastatur.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Multi-Währungs-Unterstützung</h4>
+            <p>Verfolgen Sie Ausgaben in 190+ Währungen mit automatischer Wechselkursumrechnung in Ihre Heimatwährung.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Kostenaufteilung</h4>
+            <p>Teilen Sie Ausgaben einfach unter Reisebegleitern auf und verfolgen Sie pro-Person-Kosten automatisch.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Reiseorganisation</h4>
+            <p>Verwalten Sie mehrere Reisen gleichzeitig mit dedizierter Ausgabenverfolgung für jedes Ziel.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Detaillierte Berichte</h4>
+            <p>Sehen Sie tägliche, wöchentliche und monatliche Aufschlüsselungen mit Kategorienanalyse und Ausgabentrends.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Mehrsprachig</h4>
+            <p>Volle Unterstützung für Englisch, Spanisch und Deutsch mit lokalisierten Datums- und Währungsformaten.</p>
+          </div>
+        </div>
+
+        <h3>Perfekt Für</h3>
+        <ul>
+          <li>Alleinreisende, die Urlaubsbudgets verfolgen</li>
+          <li>Gruppen, die Kosten auf Reisen aufteilen</li>
+          <li>Geschäftsreisende, die Spesenabrechnungen verwalten</li>
+          <li>Digitale Nomaden, die in mehreren Ländern arbeiten</li>
+          <li>Familien, die Urlaubsausgaben budgetieren</li>
+          <li>Jeden, der international mit mehreren Währungen reist</li>
+        </ul>
+
+        <h3>Hauptfunktionen</h3>
+        <ul>
+          <li><strong>Schnelle Ausgabeneingabe:</strong> Kategorieauswahl, Betrag, Aufteilung und Speichern in Sekunden</li>
+          <li><strong>Ausgabenkategorien:</strong> Mahlzeiten, Transport, Unterkunft, Spaß, Kaffee, Einkaufen mit benutzerdefinierten Unterkategorien</li>
+          <li><strong>Personenaufteilung:</strong> Verfolgen Sie, wer jede Ausgabe geteilt hat, und berechnen Sie Pro-Person-Kosten</li>
+          <li><strong>Datumsflexibilität:</strong> Fügen Sie Ausgaben für heute, gestern oder ein beliebiges Datum hinzu</li>
+          <li><strong>Reiseverwaltung:</strong> Erstellen, bearbeiten und archivieren Sie Reisen mit Datumsbereichen und Zwecken</li>
+          <li><strong>Währungsumrechnung:</strong> Unterstützung für 190+ Weltwährungen mit Wechselkursen</li>
+          <li><strong>Analytics Dashboard:</strong> Tägliche, wöchentliche und monatliche Ausgabenberichte</li>
+          <li><strong>Kategorienaufschlüsselung:</strong> Sehen Sie Ausgabenmuster nach Kategorien mit visuellen Diagrammen</li>
+          <li><strong>Notizen & Details:</strong> Fügen Sie Notizen und Unterkategorien hinzu, um Ausgabendetails zu verfolgen</li>
+          <li><strong>Daten Exportieren:</strong> Exportieren Sie Ausgabendaten als CSV für weitere Analysen</li>
+          <li><strong>Datenschutz Zuerst:</strong> Alle Daten werden lokal auf Ihrem Gerät gespeichert, keine Cloud-Synchronisierung erforderlich</li>
+        </ul>
+
+        <div class="note">
+          <strong>Hinweis:</strong> Spendiva ist für Reisende konzipiert, die sich auf ihre Reise konzentrieren möchten, nicht auf ihre Tabellen. Schnelle Eingabe, intelligente Organisation und detaillierte Einblicke, wenn Sie sie brauchen.
+        </div>
+
+        <a href="https://apps.apple.com/app/spendiva/id[YOUR_APP_ID]" class="button">Im App Store herunterladen</a>
+      </div>
+
+      <!-- Spanish -->
+      <div class="lang lang-es hidden">
+        <h2>Spendiva - Rastreador Inteligente de Gastos de Viaje</h2>
+        <p>Rastrea tus gastos de viaje sin esfuerzo. Perfecto para organizar gastos de viaje, dividir costos con compañeros de viaje y gestionar múltiples monedas en diferentes destinos.</p>
+        
+        <h3>¿Por Qué Elegir Spendiva?</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>Entrada Rápida</h4>
+            <p>Agrega gastos en menos de 3 segundos con nuestro diseño intuitivo de categoría primero y teclado numérico personalizado.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Soporte Multi-Moneda</h4>
+            <p>Rastrea gastos en más de 190 monedas con conversión automática de tipo de cambio a tu moneda local.</p>
+          </div>
+          <div class="feature-card">
+            <h4>División de Costos</h4>
+            <p>Divide fácilmente los gastos entre compañeros de viaje y rastrea automáticamente los costos por persona.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Organización de Viajes</h4>
+            <p>Gestiona múltiples viajes simultáneamente con seguimiento de gastos dedicado para cada destino.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Informes Detallados</h4>
+            <p>Ve desgloses diarios, semanales y mensuales con análisis de categorías y tendencias de gastos.</p>
+          </div>
+          <div class="feature-card">
+            <h4>Multilingüe</h4>
+            <p>Soporte completo para inglés, español y alemán con formato de fecha y moneda localizado.</p>
+          </div>
+        </div>
+
+        <h3>Perfecto Para</h3>
+        <ul>
+          <li>Viajeros solitarios rastreando presupuestos de vacaciones</li>
+          <li>Grupos dividiendo costos en viajes</li>
+          <li>Viajeros de negocios gestionando informes de gastos</li>
+          <li>Nómadas digitales trabajando en múltiples países</li>
+          <li>Familias presupuestando gastos de vacaciones</li>
+          <li>Cualquiera viajando internacionalmente con múltiples monedas</li>
+        </ul>
+
+        <h3>Características Principales</h3>
+        <ul>
+          <li><strong>Entrada Rápida de Gastos:</strong> Selección de categoría, monto, división y guardado en segundos</li>
+          <li><strong>Categorías de Gastos:</strong> Comidas, Transporte, Alojamiento, Diversión, Café, Compras con subcategorías personalizadas</li>
+          <li><strong>División de Personas:</strong> Rastrea quién compartió cada gasto y calcula costos por persona</li>
+          <li><strong>Flexibilidad de Fecha:</strong> Agrega gastos para hoy, ayer o cualquier fecha personalizada</li>
+          <li><strong>Gestión de Viajes:</strong> Crea, edita y archiva viajes con rangos de fechas y propósitos</li>
+          <li><strong>Conversión de Moneda:</strong> Soporte para más de 190 monedas mundiales con tipos de cambio</li>
+          <li><strong>Panel de Análisis:</strong> Informes de gastos diarios, semanales y mensuales</li>
+          <li><strong>Desglose por Categoría:</strong> Ve patrones de gasto por categoría con gráficos visuales</li>
+          <li><strong>Notas y Detalles:</strong> Agrega notas y subcategorías para rastrear detalles de gastos</li>
+          <li><strong>Exportar Datos:</strong> Exporta datos de gastos a CSV para análisis adicional</li>
+          <li><strong>Privacidad Primero:</strong> Todos los datos se almacenan localmente en tu dispositivo, no se requiere sincronización en la nube</li>
+        </ul>
+
+        <div class="note">
+          <strong>Nota:</strong> Spendiva está diseñado para viajeros que quieren concentrarse en su viaje, no en sus hojas de cálculo. Entrada rápida, organización inteligente e información detallada cuando la necesites.
+        </div>
+
+        <a href="https://apps.apple.com/app/spendiva/id[YOUR_APP_ID]" class="button">Descargar en el App Store</a>
+      </div>
+    </div>
+
+    <!-- SUPPORT SECTION -->
+    <div id="support" class="section hidden">
+
+      <!-- English -->
+      <div class="lang lang-en">
+        <h2>Support & Help</h2>
+        <p>Need help with Spendiva? We're here to assist you.</p>
+        
+        <h3>Contact</h3>
+        <p>Email: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        <p>We typically respond within 24-48 hours.</p>
+        
+        <h3>Frequently Asked Questions</h3>
+        
+        <div class="faq-item">
+          <strong>How do I create a new trip?</strong>
+          <p>Go to the Trips tab and tap the "+" button. Enter your destination, select the country/currency, set dates, choose the trip purpose, and enter the exchange rate if needed. Your new trip will become active automatically.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I add an expense?</strong>
+          <p>From the main screen, tap on a category (Meals, Transport, Stay, Fun, Coffee, or Shopping). Enter the amount using the numerical keyboard, select how many people are splitting the cost, choose the date (Today, Yesterday, or Pick Date), and tap Add. That's it!</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I add subcategories to expenses?</strong>
+          <p>Long-press (hold) on any category icon on the main screen to open the subcategory picker. Select a subcategory (like "Restaurant" for Meals or "Taxi" for Transport), then proceed to enter the amount.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Can I add expenses for past dates?</strong>
+          <p>Yes! When entering an expense, use the date selector above the keyboard. Choose "Yesterday" for quick access or "Pick Date" to select any date from the calendar.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I split costs with travel companions?</strong>
+          <p>When entering an expense, tap the people icons to select how many people are sharing the cost (1-4 quick select, or tap "+" for custom numbers up to 100). The app automatically calculates the per-person cost.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I edit or delete an expense?</strong>
+          <p>Tap the daily total at the top of the main screen to view all expenses. Swipe left on any expense and tap "Details" to edit the amount, change the subcategory, or add notes. Within the details screen, you can also delete the expense.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do currency conversions work?</strong>
+          <p>When creating a trip, enter the exchange rate (how many local currency units equal 1 unit of your home currency). All expenses are tracked in the local currency and automatically converted for reports. You can view both currencies in the analytics.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Can I manage multiple trips at once?</strong>
+          <p>Yes! Go to the Trips tab to see all your trips. Tap any trip to make it active. The main expense screen will always show expenses for your currently active trip. You can have multiple trips in different date ranges.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>What do the different trip purposes mean?</strong>
+          <p>Trip purposes (Leisure, Business, Family Visit, Adventure, Romantic, Education, Medical, Religious, Other) help you organize trips and are displayed in reports. They're optional and don't affect expense tracking.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I view spending reports?</strong>
+          <p>Tap the chart icon at the top right of the main screen. You'll see a complete trip summary with total spent, per capita costs, daily average, and detailed breakdowns. Use the segment control to switch between Daily, Weekly, and Monthly views.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>What's shown in the daily/weekly/monthly reports?</strong>
+          <p>Daily reports show expenses grouped by date with category breakdowns. Weekly reports group by week with totals and daily averages. Monthly reports show comprehensive category analysis with spending percentages and subcategory details.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I export my expense data?</strong>
+          <p>Go to Settings and tap "Export CSV". This creates a spreadsheet file with all your expenses including dates, categories, subcategories, amounts, currencies, people counts, and notes. You can open this in Excel, Numbers, or Google Sheets.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I change the app language?</strong>
+          <p>Go to Settings and select your preferred language (English, Español, or Deutsch). The app will immediately switch to the selected language, including all categories, reports, and interface elements.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>What happens to expenses when I switch trips?</strong>
+          <p>Each expense is linked to the trip it was created for. When you switch to a different trip, you'll only see expenses for that trip. Your data for other trips is safely stored and will reappear when you switch back.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I archive a trip?</strong>
+          <p>In the Trips tab, swipe left on any trip and tap "Archive". Archived trips are hidden from the main list but can be viewed by toggling "Show Archived" in the Trips tab. All expense data is preserved.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Can I add notes to expenses?</strong>
+          <p>Yes! View your expenses by tapping the daily total, swipe left on any expense, tap "Details", and add or edit notes in the note field. Notes help you remember details about each expense.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Is my data stored in the cloud?</strong>
+          <p>No. All your data is stored locally on your device. Spendiva doesn't sync to any cloud service, which means your financial data stays private and secure on your device.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>What if I need to clear all data?</strong>
+          <p>Go to Settings and tap "Clear All Data". This will permanently delete all trips and expenses. Use this carefully - there's no undo! You might want to export your data first.</p>
+        </div>
+        
+        <h3>Tips & Best Practices</h3>
+        <ul>
+          <li>Set up your trip before you travel with the correct exchange rate</li>
+          <li>Add expenses immediately to avoid forgetting them later</li>
+          <li>Use subcategories to get detailed spending insights</li>
+          <li>Check your daily total regularly to stay within budget</li>
+          <li>Review weekly/monthly reports to understand spending patterns</li>
+          <li>Export data at the end of each trip for your records</li>
+        </ul>
+        
+        <h3>System Requirements</h3>
+        <ul>
+          <li>iOS 15.0 or later</li>
+          <li>iPhone or iPad</li>
+          <li>Compatible with iPhone, iPad, and iPod touch</li>
+        </ul>
+      </div>
+
+      <!-- German -->
+      <div class="lang lang-de hidden">
+        <h2>Support & Hilfe</h2>
+        <p>Benötigen Sie Hilfe mit Spendiva? Wir sind für Sie da.</p>
+        
+        <h3>Kontakt</h3>
+        <p>E-Mail: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        <p>Wir antworten normalerweise innerhalb von 24-48 Stunden.</p>
+        
+        <h3>Häufig Gestellte Fragen</h3>
+        
+        <div class="faq-item">
+          <strong>Wie erstelle ich eine neue Reise?</strong>
+          <p>Gehen Sie zum Reisen-Tab und tippen Sie auf die "+"-Schaltfläche. Geben Sie Ihr Ziel ein, wählen Sie das Land/die Währung, legen Sie Daten fest, wählen Sie den Reisezweck und geben Sie bei Bedarf den Wechselkurs ein. Ihre neue Reise wird automatisch aktiviert.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie füge ich eine Ausgabe hinzu?</strong>
+          <p>Tippen Sie vom Hauptbildschirm auf eine Kategorie (Mahlzeiten, Transport, Unterkunft, Spaß, Kaffee oder Einkaufen). Geben Sie den Betrag mit der numerischen Tastatur ein, wählen Sie, wie viele Personen die Kosten teilen, wählen Sie das Datum (Heute, Gestern oder Datum wählen) und tippen Sie auf Hinzufügen. Das war's!</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie füge ich Unterkategorien zu Ausgaben hinzu?</strong>
+          <p>Drücken Sie lange (halten Sie) auf ein Kategoriesymbol auf dem Hauptbildschirm, um die Unterkategorie-Auswahl zu öffnen. Wählen Sie eine Unterkategorie (wie "Restaurant" für Mahlzeiten oder "Taxi" für Transport) und fahren Sie dann mit der Eingabe des Betrags fort.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Kann ich Ausgaben für vergangene Daten hinzufügen?</strong>
+          <p>Ja! Verwenden Sie beim Eingeben einer Ausgabe die Datumsauswahl über der Tastatur. Wählen Sie "Gestern" für schnellen Zugriff oder "Datum wählen", um ein beliebiges Datum aus dem Kalender auszuwählen.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie teile ich Kosten mit Reisebegleitern?</strong>
+          <p>Tippen Sie beim Eingeben einer Ausgabe auf die Personensymbole, um auszuwählen, wie viele Personen die Kosten teilen (1-4 Schnellauswahl oder tippen Sie auf "+" für benutzerdefinierte Zahlen bis 100). Die App berechnet automatisch die Pro-Person-Kosten.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie bearbeite oder lösche ich eine Ausgabe?</strong>
+          <p>Tippen Sie auf die Tagesgesamtsumme oben auf dem Hauptbildschirm, um alle Ausgaben anzuzeigen. Wischen Sie bei einer Ausgabe nach links und tippen Sie auf "Details", um den Betrag zu bearbeiten, die Unterkategorie zu ändern oder Notizen hinzuzufügen. Im Detailbildschirm können Sie die Ausgabe auch löschen.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie funktionieren Währungsumrechnungen?</strong>
+          <p>Geben Sie beim Erstellen einer Reise den Wechselkurs ein (wie viele lokale Währungseinheiten 1 Einheit Ihrer Heimatwährung entsprechen). Alle Ausgaben werden in der lokalen Währung verfolgt und automatisch für Berichte umgerechnet. Sie können beide Währungen in der Analyse anzeigen.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Kann ich mehrere Reisen gleichzeitig verwalten?</strong>
+          <p>Ja! Gehen Sie zum Reisen-Tab, um alle Ihre Reisen zu sehen. Tippen Sie auf eine beliebige Reise, um sie zu aktivieren. Der Hauptausgabenbildschirm zeigt immer Ausgaben für Ihre derzeit aktive Reise. Sie können mehrere Reisen in verschiedenen Datumsbereichen haben.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Was bedeuten die verschiedenen Reisezwecke?</strong>
+          <p>Reisezwecke (Freizeit, Geschäftlich, Familienbesuch, Abenteuer, Romantisch, Bildung, Medizinisch, Religiös, Sonstiges) helfen Ihnen, Reisen zu organisieren und werden in Berichten angezeigt. Sie sind optional und beeinflussen die Ausgabenverfolgung nicht.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie zeige ich Ausgabenberichte an?</strong>
+          <p>Tippen Sie auf das Diagrammsymbol oben rechts auf dem Hauptbildschirm. Sie sehen eine vollständige Reisezusammenfassung mit Gesamtausgaben, Pro-Kopf-Kosten, Tagesdurchschnitt und detaillierten Aufschlüsselungen. Verwenden Sie die Segment-Steuerung, um zwischen Tages-, Wochen- und Monatsansicht zu wechseln.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Was wird in den täglichen/wöchentlichen/monatlichen Berichten angezeigt?</strong>
+          <p>Tagesberichte zeigen Ausgaben gruppiert nach Datum mit Kategorienaufschlüsselung. Wochenberichte gruppieren nach Woche mit Gesamtsummen und Tagesdurchschnitten. Monatsberichte zeigen umfassende Kategorienanalyse mit Ausgabenprozentsätzen und Unterkategoriedetails.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie exportiere ich meine Ausgabendaten?</strong>
+          <p>Gehen Sie zu Einstellungen und tippen Sie auf "CSV Exportieren". Dies erstellt eine Tabellendatei mit allen Ihren Ausgaben einschließlich Daten, Kategorien, Unterkategorien, Beträge, Währungen, Personenanzahl und Notizen. Sie können dies in Excel, Numbers oder Google Sheets öffnen.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie ändere ich die App-Sprache?</strong>
+          <p>Gehen Sie zu Einstellungen und wählen Sie Ihre bevorzugte Sprache (English, Español oder Deutsch). Die App wechselt sofort zur ausgewählten Sprache, einschließlich aller Kategorien, Berichte und Schnittstellenelemente.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Was passiert mit Ausgaben, wenn ich Reisen wechsle?</strong>
+          <p>Jede Ausgabe ist mit der Reise verknüpft, für die sie erstellt wurde. Wenn Sie zu einer anderen Reise wechseln, sehen Sie nur Ausgaben für diese Reise. Ihre Daten für andere Reisen werden sicher gespeichert und erscheinen wieder, wenn Sie zurückwechseln.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie archiviere ich eine Reise?</strong>
+          <p>Wischen Sie im Reisen-Tab bei einer beliebigen Reise nach links und tippen Sie auf "Archivieren". Archivierte Reisen werden in der Hauptliste ausgeblendet, können aber durch Umschalten von "Archivierte anzeigen" im Reisen-Tab angezeigt werden. Alle Ausgabendaten werden beibehalten.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Kann ich Notizen zu Ausgaben hinzufügen?</strong>
+          <p>Ja! Zeigen Sie Ihre Ausgaben an, indem Sie auf die Tagesgesamtsumme tippen, wischen Sie bei einer Ausgabe nach links, tippen Sie auf "Details" und fügen Sie Notizen im Notizfeld hinzu oder bearbeiten Sie sie. Notizen helfen Ihnen, sich an Details zu jeder Ausgabe zu erinnern.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Werden meine Daten in der Cloud gespeichert?</strong>
+          <p>Nein. Alle Ihre Daten werden lokal auf Ihrem Gerät gespeichert. Spendiva synchronisiert nicht mit einem Cloud-Dienst, was bedeutet, dass Ihre finanziellen Daten privat und sicher auf Ihrem Gerät bleiben.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Was ist, wenn ich alle Daten löschen muss?</strong>
+          <p>Gehen Sie zu Einstellungen und tippen Sie auf "Alle Daten löschen". Dies löscht dauerhaft alle Reisen und Ausgaben. Verwenden Sie dies vorsichtig - es gibt kein Rückgängig! Sie möchten möglicherweise zuerst Ihre Daten exportieren.</p>
+        </div>
+        
+        <h3>Tipps & Best Practices</h3>
+        <ul>
+          <li>Richten Sie Ihre Reise vor der Reise mit dem korrekten Wechselkurs ein</li>
+          <li>Fügen Sie Ausgaben sofort hinzu, um sie später nicht zu vergessen</li>
+          <li>Verwenden Sie Unterkategorien für detaillierte Ausgabeneinblicke</li>
+          <li>Überprüfen Sie regelmäßig Ihre Tagesgesamtsumme, um im Budget zu bleiben</li>
+          <li>Überprüfen Sie Wochen-/Monatsberichte, um Ausgabenmuster zu verstehen</li>
+          <li>Exportieren Sie Daten am Ende jeder Reise für Ihre Unterlagen</li>
+        </ul>
+        
+        <h3>Systemanforderungen</h3>
+        <ul>
+          <li>iOS 15.0 oder neuer</li>
+          <li>iPhone oder iPad</li>
+          <li>Kompatibel mit iPhone, iPad und iPod touch</li>
+        </ul>
+      </div>
+
+      <!-- Spanish -->
+      <div class="lang lang-es hidden">
+        <h2>Soporte y Ayuda</h2>
+        <p>¿Necesitas ayuda con Spendiva? Estamos aquí para asistirte.</p>
+        
+        <h3>Contacto</h3>
+        <p>Email: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        <p>Normalmente respondemos en 24-48 horas.</p>
+        
+        <h3>Preguntas Frecuentes</h3>
+        
+        <div class="faq-item">
+          <strong>¿Cómo creo un nuevo viaje?</strong>
+          <p>Ve a la pestaña Viajes y toca el botón "+". Ingresa tu destino, selecciona el país/moneda, establece fechas, elige el propósito del viaje e ingresa el tipo de cambio si es necesario. Tu nuevo viaje se activará automáticamente.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo agrego un gasto?</strong>
+          <p>Desde la pantalla principal, toca una categoría (Comidas, Transporte, Alojamiento, Diversión, Café o Compras). Ingresa el monto usando el teclado numérico, selecciona cuántas personas están dividiendo el costo, elige la fecha (Hoy, Ayer o Elegir Fecha) y toca Agregar. ¡Eso es todo!</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo agrego subcategorías a los gastos?</strong>
+          <p>Mantén presionado cualquier ícono de categoría en la pantalla principal para abrir el selector de subcategorías. Selecciona una subcategoría (como "Restaurante" para Comidas o "Taxi" para Transporte), luego procede a ingresar el monto.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Puedo agregar gastos para fechas pasadas?</strong>
+          <p>¡Sí! Al ingresar un gasto, usa el selector de fecha sobre el teclado. Elige "Ayer" para acceso rápido o "Elegir Fecha" para seleccionar cualquier fecha del calendario.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo divido costos con compañeros de viaje?</strong>
+          <p>Al ingresar un gasto, toca los íconos de personas para seleccionar cuántas personas están compartiendo el costo (1-4 selección rápida, o toca "+" para números personalizados hasta 100). La app calcula automáticamente el costo por persona.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo edito o elimino un gasto?</strong>
+          <p>Toca el total diario en la parte superior de la pantalla principal para ver todos los gastos. Desliza a la izquierda en cualquier gasto y toca "Detalles" para editar el monto, cambiar la subcategoría o agregar notas. Dentro de la pantalla de detalles, también puedes eliminar el gasto.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo funcionan las conversiones de moneda?</strong>
+          <p>Al crear un viaje, ingresa el tipo de cambio (cuántas unidades de moneda local equivalen a 1 unidad de tu moneda local). Todos los gastos se rastrean en la moneda local y se convierten automáticamente para los informes. Puedes ver ambas monedas en los análisis.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Puedo gestionar múltiples viajes a la vez?</strong>
+          <p>¡Sí! Ve a la pestaña Viajes para ver todos tus viajes. Toca cualquier viaje para activarlo. La pantalla principal de gastos siempre mostrará gastos para tu viaje actualmente activo. Puedes tener múltiples viajes en diferentes rangos de fechas.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Qué significan los diferentes propósitos de viaje?</strong>
+          <p>Los propósitos de viaje (Ocio, Negocios, Visita Familiar, Aventura, Romántico, Educación, Médico, Religioso, Otro) te ayudan a organizar viajes y se muestran en los informes. Son opcionales y no afectan el seguimiento de gastos.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo veo informes de gastos?</strong>
+          <p>Toca el ícono de gráfico en la parte superior derecha de la pantalla principal. Verás un resumen completo del viaje con total gastado, costos per cápita, promedio diario y desgloses detallados. Usa el control de segmento para cambiar entre vistas Diarias, Semanales y Mensuales.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Qué se muestra en los informes diarios/semanales/mensuales?</strong>
+          <p>Los informes diarios muestran gastos agrupados por fecha con desgloses de categorías. Los informes semanales agrupan por semana con totales y promedios diarios. Los informes mensuales muestran análisis completo de categorías con porcentajes de gastos y detalles de subcategorías.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo exporto mis datos de gastos?</strong>
+          <p>Ve a Configuración y toca "Exportar CSV". Esto crea un archivo de hoja de cálculo con todos tus gastos incluyendo fechas, categorías, subcategorías, montos, monedas, conteo de personas y notas. Puedes abrirlo en Excel, Numbers o Google Sheets.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo cambio el idioma de la app?</strong>
+          <p>Ve a Configuración y selecciona tu idioma preferido (English, Español o Deutsch). La app cambiará inmediatamente al idioma seleccionado, incluyendo todas las categorías, informes y elementos de la interfaz.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Qué pasa con los gastos cuando cambio de viaje?</strong>
+          <p>Cada gasto está vinculado al viaje para el que fue creado. Cuando cambias a un viaje diferente, solo verás gastos para ese viaje. Tus datos de otros viajes se almacenan de forma segura y reaparecerán cuando cambies de vuelta.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo archivo un viaje?</strong>
+          <p>En la pestaña Viajes, desliza a la izquierda en cualquier viaje y toca "Archivar". Los viajes archivados están ocultos de la lista principal pero pueden verse alternando "Mostrar Archivados" en la pestaña Viajes. Todos los datos de gastos se conservan.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Puedo agregar notas a los gastos?</strong>
+          <p>¡Sí! Ve tus gastos tocando el total diario, desliza a la izquierda en cualquier gasto, toca "Detalles" y agrega o edita notas en el campo de nota. Las notas te ayudan a recordar detalles sobre cada gasto.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Mis datos se almacenan en la nube?</strong>
+          <p>No. Todos tus datos se almacenan localmente en tu dispositivo. Spendiva no se sincroniza con ningún servicio en la nube, lo que significa que tus datos financieros permanecen privados y seguros en tu dispositivo.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Qué pasa si necesito borrar todos los datos?</strong>
+          <p>Ve a Configuración y toca "Borrar Todos los Datos". Esto eliminará permanentemente todos los viajes y gastos. Úsalo con cuidado - ¡no hay deshacer! Es posible que quieras exportar tus datos primero.</p>
+        </div>
+        
+        <h3>Consejos y Mejores Prácticas</h3>
+        <ul>
+          <li>Configura tu viaje antes de viajar con el tipo de cambio correcto</li>
+          <li>Agrega gastos inmediatamente para no olvidarlos después</li>
+          <li>Usa subcategorías para obtener información detallada de gastos</li>
+          <li>Revisa tu total diario regularmente para mantenerte dentro del presupuesto</li>
+          <li>Revisa informes semanales/mensuales para entender patrones de gasto</li>
+          <li>Exporta datos al final de cada viaje para tus registros</li>
+        </ul>
+        
+        <h3>Requisitos del Sistema</h3>
+        <ul>
+          <li>iOS 15.0 o posterior</li>
+          <li>iPhone o iPad</li>
+          <li>Compatible con iPhone, iPad y iPod touch</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PRIVACY SECTION -->
+    <div id="privacy" class="section hidden">
+
+      <!-- English -->
+      <div class="lang lang-en">
+        <h2>Privacy Policy</h2>
+        
+        <h3>No Data Collection</h3>
+        <p>Spendiva does not collect, transmit, or share any personal data, financial information, or travel details. All data processing happens entirely on your device.</p>
+        
+        <h3>Local Storage Only</h3>
+        <p>Your expense data, trips, and settings never leave your device. Spendiva stores all information locally using iOS secure storage mechanisms. No data is uploaded to servers, transmitted over the internet, or shared with third parties.</p>
+        
+        <h3>What Data is Stored Locally</h3>
+        <p>Spendiva stores the following information locally on your device:</p>
+        <ul>
+          <li>Trip information (destinations, dates, currencies, exchange rates)</li>
+          <li>Expense records (amounts, categories, dates, notes)</li>
+          <li>Application settings (language preference, home currency)</li>
+          <li>User preferences (onboarding completion status)</li>
+        </ul>
+        <p>This data is stored using iOS UserDefaults and Core Data, and is protected by your device's security features.</p>
+        
+        <h3>No Network Access</h3>
+        <p>Spendiva does not connect to the internet or any external services. It operates completely offline and requires no network permissions. Your financial data remains entirely private.</p>
+        
+        <h3>No Analytics or Tracking</h3>
+        <p>We do not collect any analytics, usage statistics, crash reports, or tracking data. Spendiva has no ability to monitor how you use the app or what data you enter.</p>
+        
+        <h3>Your Control</h3>
+        <p>You have complete control over your data:</p>
+        <ul>
+          <li>Export all your data to CSV format at any time</li>
+          <li>Delete individual expenses or entire trips</li>
+          <li>Clear all data with the "Clear All Data" option in Settings</li>
+          <li>If you uninstall Spendiva, all locally stored data is automatically removed from your device</li>
+        </ul>
+        
+        <h3>Security</h3>
+        <p>Spendiva follows iOS security best practices:</p>
+        <ul>
+          <li>Data stored using iOS secure storage mechanisms</li>
+          <li>Protected by your device's passcode/biometric authentication</li>
+          <li>App Sandbox enabled for isolated operation</li>
+          <li>No unnecessary permissions requested</li>
+          <li>Code signed and distributed through the official App Store</li>
+        </ul>
+        
+        <h3>No Third-Party Services</h3>
+        <p>Spendiva does not integrate with or share data with any third-party services, including:</p>
+        <ul>
+          <li>No advertising networks</li>
+          <li>No analytics platforms</li>
+          <li>No social media integration</li>
+          <li>No cloud storage services</li>
+          <li>No payment processors</li>
+        </ul>
+        
+        <h3>Children's Privacy</h3>
+        <p>Spendiva does not knowingly collect any information from anyone, including children under 13. Since we don't collect any data at all, children can use the app safely.</p>
+        
+        <h3>Updates to This Policy</h3>
+        <p>We may update this privacy policy from time to time to reflect changes in the app or legal requirements. Any changes will be posted on this page. The app's core privacy principles (no data collection, local storage only) will not change.</p>
+        
+        <h3>Contact</h3>
+        <p>If you have questions about privacy or data handling, contact us at: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        
+        <p><em>Last updated: January 2025</em></p>
+      </div>
+
+      <!-- German -->
+      <div class="lang lang-de hidden">
+        <h2>Datenschutzerklärung</h2>
+        
+        <h3>Keine Datenerfassung</h3>
+        <p>Spendiva sammelt, überträgt oder teilt keine persönlichen Daten, finanziellen Informationen oder Reisedetails. Alle Datenverarbeitung erfolgt vollständig auf Ihrem Gerät.</p>
+        
+        <h3>Nur Lokale Speicherung</h3>
+        <p>Ihre Ausgabendaten, Reisen und Einstellungen verlassen niemals Ihr Gerät. Spendiva speichert alle Informationen lokal mit iOS-Sicherheitsspeichermechanismen. Es werden keine Daten auf Server hochgeladen, über das Internet übertragen oder mit Dritten geteilt.</p>
+        
+        <h3>Welche Daten Werden Lokal Gespeichert</h3>
+        <p>Spendiva speichert die folgenden Informationen lokal auf Ihrem Gerät:</p>
+        <ul>
+          <li>Reiseinformationen (Ziele, Daten, Währungen, Wechselkurse)</li>
+          <li>Ausgabenaufzeichnungen (Beträge, Kategorien, Daten, Notizen)</li>
+          <li>Anwendungseinstellungen (Sprachpräferenz, Heimatwährung)</li>
+          <li>Benutzerpräferenzen (Onboarding-Abschlussstatus)</li>
+        </ul>
+        <p>Diese Daten werden mit iOS UserDefaults und Core Data gespeichert und durch die Sicherheitsfunktionen Ihres Geräts geschützt.</p>
+        
+        <h3>Kein Netzwerkzugriff</h3>
+        <p>Spendiva verbindet sich nicht mit dem Internet oder externen Diensten. Es arbeitet vollständig offline und benötigt keine Netzwerkberechtigungen. Ihre finanziellen Daten bleiben vollständig privat.</p>
+        
+        <h3>Keine Analysen oder Tracking</h3>
+        <p>Wir sammeln keine Analysen, Nutzungsstatistiken, Absturzberichte oder Tracking-Daten. Spendiva hat keine Möglichkeit zu überwachen, wie Sie die App verwenden oder welche Daten Sie eingeben.</p>
+        
+        <h3>Ihre Kontrolle</h3>
+        <p>Sie haben vollständige Kontrolle über Ihre Daten:</p>
+        <ul>
+          <li>Exportieren Sie alle Ihre Daten jederzeit im CSV-Format</li>
+          <li>Löschen Sie einzelne Ausgaben oder ganze Reisen</li>
+          <li>Löschen Sie alle Daten mit der Option "Alle Daten löschen" in den Einstellungen</li>
+          <li>Wenn Sie Spendiva deinstallieren, werden alle lokal gespeicherten Daten automatisch von Ihrem Gerät entfernt</li>
+        </ul>
+        
+        <h3>Sicherheit</h3>
+        <p>Spendiva folgt den iOS-Sicherheits-Best-Practices:</p>
+        <ul>
+          <li>Daten werden mit iOS-Sicherheitsspeichermechanismen gespeichert</li>
+          <li>Geschützt durch den Passcode/biometrische Authentifizierung Ihres Geräts</li>
+          <li>App Sandbox für isolierten Betrieb aktiviert</li>
+          <li>Keine unnötigen Berechtigungen angefordert</li>
+          <li>Code-signiert und über den offiziellen App Store vertrieben</li>
+        </ul>
+        
+        <h3>Keine Drittanbieterdienste</h3>
+        <p>Spendiva integriert nicht mit oder teilt Daten mit Drittanbieterdiensten, einschließlich:</p>
+        <ul>
+          <li>Keine Werbenetzwerke</li>
+          <li>Keine Analyseplattformen</li>
+          <li>Keine Social-Media-Integration</li>
+          <li>Keine Cloud-Speicherdienste</li>
+          <li>Keine Zahlungsabwickler</li>
+        </ul>
+        
+        <h3>Datenschutz für Kinder</h3>
+        <p>Spendiva sammelt wissentlich keine Informationen von irgendjemandem, einschließlich Kindern unter 13 Jahren. Da wir überhaupt keine Daten sammeln, können Kinder die App sicher verwenden.</p>
+        
+        <h3>Aktualisierungen dieser Richtlinie</h3>
+        <p>Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren, um Änderungen in der App oder gesetzliche Anforderungen widerzuspiegeln. Alle Änderungen werden auf dieser Seite veröffentlicht. Die Kerndatenschutzprinzipien der App (keine Datenerfassung, nur lokale Speicherung) werden sich nicht ändern.</p>
+        
+        <h3>Kontakt</h3>
+        <p>Bei Fragen zum Datenschutz oder zur Datenverarbeitung kontaktieren Sie uns unter: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        
+        <p><em>Zuletzt aktualisiert: Januar 2025</em></p>
+      </div>
+
+      <!-- Spanish -->
+      <div class="lang lang-es hidden">
+        <h2>Política de Privacidad</h2>
+        
+        <h3>No se Recopilan Datos</h3>
+        <p>Spendiva no recopila, transmite ni comparte ningún dato personal, información financiera o detalles de viajes. Todo el procesamiento de datos ocurre completamente en tu dispositivo.</p>
+        
+        <h3>Solo Almacenamiento Local</h3>
+        <p>Tus datos de gastos, viajes y configuraciones nunca salen de tu dispositivo. Spendiva almacena toda la información localmente usando mecanismos de almacenamiento seguro de iOS. No se suben datos a servidores, se transmiten por internet ni se comparten con terceros.</p>
+        
+        <h3>Qué Datos se Almacenan Localmente</h3>
+        <p>Spendiva almacena la siguiente información localmente en tu dispositivo:</p>
+        <ul>
+          <li>Información de viajes (destinos, fechas, monedas, tipos de cambio)</li>
+          <li>Registros de gastos (montos, categorías, fechas, notas)</li>
+          <li>Configuraciones de la aplicación (preferencia de idioma, moneda local)</li>
+          <li>Preferencias del usuario (estado de finalización del tutorial)</li>
+        </ul>
+        <p>Estos datos se almacenan usando UserDefaults y Core Data de iOS, y están protegidos por las características de seguridad de tu dispositivo.</p>
+        
+        <h3>Sin Acceso a Red</h3>
+        <p>Spendiva no se conecta a internet ni a servicios externos. Opera completamente sin conexión y no requiere permisos de red. Tus datos financieros permanecen completamente privados.</p>
+        
+        <h3>Sin Análisis o Rastreo</h3>
+        <p>No recopilamos ningún análisis, estadísticas de uso, informes de fallos o datos de rastreo. Spendiva no tiene capacidad de monitorear cómo usas la app o qué datos ingresas.</p>
+        
+        <h3>Tu Control</h3>
+        <p>Tienes control completo sobre tus datos:</p>
+        <ul>
+          <li>Exporta todos tus datos a formato CSV en cualquier momento</li>
+          <li>Elimina gastos individuales o viajes completos</li>
+          <li>Borra todos los datos con la opción "Borrar Todos los Datos" en Configuración</li>
+          <li>Si desinstalas Spendiva, todos los datos almacenados localmente se eliminan automáticamente de tu dispositivo</li>
+        </ul>
+        
+        <h3>Seguridad</h3>
+        <p>Spendiva sigue las mejores prácticas de seguridad de iOS:</p>
+        <ul>
+          <li>Datos almacenados usando mecanismos de almacenamiento seguro de iOS</li>
+          <li>Protegidos por el código/autenticación biométrica de tu dispositivo</li>
+          <li>App Sandbox habilitado para operación aislada</li>
+          <li>No se solicitan permisos innecesarios</li>
+          <li>Código firmado y distribuido a través del App Store oficial</li>
+        </ul>
+        
+        <h3>Sin Servicios de Terceros</h3>
+        <p>Spendiva no se integra con ni comparte datos con servicios de terceros, incluyendo:</p>
+        <ul>
+          <li>Sin redes publicitarias</li>
+          <li>Sin plataformas de análisis</li>
+          <li>Sin integración de redes sociales</li>
+          <li>Sin servicios de almacenamiento en la nube</li>
+          <li>Sin procesadores de pagos</li>
+        </ul>
+        
+        <h3>Privacidad de Niños</h3>
+        <p>Spen
