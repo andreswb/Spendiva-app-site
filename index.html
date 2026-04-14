@@ -7,7 +7,7 @@
   <link rel="icon" href="logo.png" type="image/x-icon">
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
-    header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); flex-wrap: wrap; gap: 10px; }
     header h1 { margin: 0; font-size: 20px; display: flex; align-items: center; }
     header h1 span { font-size: 24px; margin-right: 10px; }
     nav a { color: white; margin: 0 10px; text-decoration: none; font-weight: 600; transition: opacity 0.3s; }
@@ -35,472 +35,833 @@
     .disclaimer-box p { margin: 10px 0; line-height: 1.8; }
     .highlight-box { background: #dcfce7; border-left: 4px solid #10b981; padding: 20px; margin: 25px 0; border-radius: 8px; }
     .highlight-box strong { color: #059669; font-size: 1.1em; }
-    .pro-badge { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.85em; font-weight: 700; margin-left: 8px; display: inline-block; }
+    .highlight-box p { margin: 10px 0; }
+    .pro-badge { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.85em; font-weight: 700; margin-left: 8px; display: inline-block; vertical-align: middle; }
     .pro-section { background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 30px; border-radius: 12px; margin: 30px 0; border: 3px solid #f59e0b; }
     .pro-section h3 { color: #92400e; margin-top: 0; }
+    .privacy-section h3 { color: #059669; }
+    .privacy-section p, .privacy-section ul { color: #444; }
   </style>
-  
-<script>
-  function switchLanguage(lang) {
-    document.querySelectorAll('.lang').forEach(el => el.classList.add('hidden'));
-    document.querySelectorAll('.lang-' + lang).forEach(el => el.classList.remove('hidden'));
-    document.getElementById('lang-selector').value = lang;
-  }
 
-  function showSection(section) {
-    document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
-    const target = document.getElementById(section);
-    if (target) target.classList.remove('hidden');
-  }
-
-  function getQueryParam(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-  }
-
-  window.onload = function() {
-    const hash = window.location.hash.substring(1);
-    const lang = getQueryParam('lang');
-
-    if (hash === 'privacy') showSection('privacy');
-    else if (hash === 'support') showSection('support');
-    else showSection('home');
-    
-    switchLanguage(lang === 'de' || lang === 'es' ? lang : 'en');
-  }
-</script>
-
+  <script>
+    function switchLanguage(lang) {
+      document.querySelectorAll('.lang').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.lang-' + lang).forEach(el => el.classList.remove('hidden'));
+      document.getElementById('lang-selector').value = lang;
+      document.documentElement.lang = lang;
+    }
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById(id);
+      if (target) target.classList.remove('hidden');
+    }
+    function getQueryParam(param) {
+      return new URLSearchParams(window.location.search).get(param);
+    }
+    window.onload = function () {
+      const hash = window.location.hash.substring(1);
+      const lang = getQueryParam('lang');
+      if (hash === 'privacy') showSection('privacy');
+      else if (hash === 'support') showSection('support');
+      else showSection('home');
+      const validLangs = ['en', 'de', 'es', 'fr'];
+      switchLanguage(validLangs.includes(lang) ? lang : 'en');
+    };
+  </script>
 </head>
 <body>
-  <header>
-    <h1>
-      <span>✈️</span>
-      Spendiva
-    </h1>
-    <nav>
-      <a href="#home" onclick="showSection('home')">Home</a>
-      <a href="#support" onclick="showSection('support')">Support</a>
-      <a href="#privacy" onclick="showSection('privacy')">Privacy Policy</a>
-    </nav>
-    <div>
-      <select id="lang-selector" onchange="switchLanguage(this.value)">
-        <option value="en" selected>English</option>
-        <option value="de">Deutsch</option>
-        <option value="es">Español</option>
-      </select>
+
+<!-- ════════════════════════════ HEADER ════════════════════════════ -->
+<header>
+  <h1><span>✈️</span> Spendiva</h1>
+  <nav>
+    <a href="#home"    onclick="showSection('home')">Home</a>
+    <a href="#support" onclick="showSection('support')">Support</a>
+    <a href="#privacy" onclick="showSection('privacy')">Privacy</a>
+  </nav>
+  <div>
+    <select id="lang-selector" onchange="switchLanguage(this.value)">
+      <option value="en">English</option>
+      <option value="de">Deutsch</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+    </select>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- ════════════════════════════ HOME ════════════════════════════ -->
+<div id="home" class="section">
+
+  <!-- ── ENGLISH ── -->
+  <div class="lang lang-en">
+    <h2>Spendiva — Smart Travel Expense Tracker</h2>
+    <p>Track your travel expenses effortlessly. Perfect for organizing trip spending, splitting costs with travel companions, and managing multiple currencies across different destinations — completely offline and without any account.</p>
+
+    <div class="highlight-box">
+      <strong>🌍 Fully Offline &bull; No Internet Required &bull; No Account Needed</strong>
+      <p>Spendiva works completely offline while you travel. No roaming charges, no internet connection needed. Your data stays 100% private and secure on your device — never uploaded anywhere.</p>
     </div>
-  </header>
 
-  <div class="container">
+    <h3>Perfect For</h3>
+    <ul>
+      <li>Solo travelers tracking vacation spending</li>
+      <li>Groups splitting costs on trips</li>
+      <li>Business travelers managing expense reports <span class="pro-badge">PRO</span></li>
+      <li>Digital nomads working across multiple countries</li>
+      <li>Families managing holiday budgets</li>
+      <li>Anyone traveling internationally with multiple currencies</li>
+    </ul>
 
-    <!-- HOME SECTION -->
-    <div id="home" class="section">
+    <h3>Key Features</h3>
+    <ul>
+      <li><strong>Fully Offline:</strong> Works everywhere — no internet, no roaming charges</li>
+      <li><strong>No Login Required:</strong> All data stored locally on your device, never in the cloud</li>
+      <li><strong>3-Second Expense Entry:</strong> Tap category → enter amount → done</li>
+      <li><strong>6 Expense Categories:</strong> Meals, Transport, Stay, Fun, Coffee, Shopping — each with detailed subcategories</li>
+      <li><strong>Expense Splitting:</strong> Split with up to 4 people (free) or unlimited <span class="pro-badge">PRO</span></li>
+      <li><strong>Payment Methods:</strong> Personal (free) and Corporate <span class="pro-badge">PRO</span></li>
+      <li><strong>Multi-Currency per Expense</strong> <span class="pro-badge">PRO</span>: Enter expenses in any currency within the same trip with automatic conversion</li>
+      <li><strong>Date Flexibility:</strong> Log expenses for today, yesterday, or any custom date and time</li>
+      <li><strong>Trip Management:</strong> Create, edit, and archive trips with date ranges, purposes, and optional nicknames</li>
+      <li><strong>195+ Currencies:</strong> Full support with exchange rate conversion to your home currency</li>
+      <li><strong>Analytics Dashboard:</strong> Daily, weekly, and monthly spending reports</li>
+      <li><strong>Category Breakdown:</strong> Visual pie charts showing spending patterns by category</li>
+      <li><strong>Subcategories:</strong> Long-press any category to log details (e.g. "Restaurant" under Meals)</li>
+      <li><strong>Notes:</strong> Add short notes to any expense for easy reference</li>
+      <li><strong>Edit Anytime:</strong> Swipe any expense to edit amount, date, note, category, or split</li>
+      <li><strong>PDF Export</strong> <span class="pro-badge">PRO</span>: Professional reports with charts and payment breakdowns</li>
+      <li><strong>CSV Export</strong> <span class="pro-badge">PRO</span>: Export all data for Excel or accounting software</li>
+      <li><strong>Daily Reminders</strong> <span class="pro-badge">PRO</span>: Set a daily notification to log expenses before you forget — only fires on active trip days</li>
+      <li><strong>Localized Country Names:</strong> Country and destination names displayed in your device language</li>
+      <li><strong>iPad Optimized:</strong> Beautiful split-screen layouts for larger displays</li>
+      <li><strong>4 Languages:</strong> English, Spanish, German, and French with localized date and currency formatting</li>
+      <li><strong>Made in Switzerland 🇨🇭</strong></li>
+    </ul>
 
-      <!-- English -->
-      <div class="lang lang-en">
-        <h2>Spendiva - Smart Travel Expense Tracker</h2>
-        <p>Track your travel expenses effortlessly. Perfect for organizing trip spending, splitting costs with travel companions, and managing multiple currencies across different destinations.</p>
-        
-        
+    <div class="note">
+      <strong>Exchange Rate Disclaimer:</strong> Exchange rates are approximate estimates based on historical data (March 2026) and should be independently verified before making financial decisions. Rates are provided for convenience only and may not reflect current market values. The developer is not responsible for any financial losses resulting from inaccurate exchange rates.
+    </div>
+    <div class="note">
+      <strong>Data Responsibility:</strong> Users are solely responsible for backing up their expense data. While Spendiva stores data locally for your privacy, the developer is not liable for any data loss due to device failure, app updates, or other circumstances. Export your data regularly (Pro feature) to maintain backups.
+    </div>
 
-        <h3>Perfect For</h3>
-        <ul>
-          <li>Solo travelers tracking vacation spending</li>
-          <li>Groups splitting costs on trips</li>
-          <li>Business travelers managing expense reports (Pro)</li>
-          <li>Digital nomads working across multiple countries</li>
-          <li>Families managing holiday expenses</li>
-          <li>Anyone traveling internationally with multiple currencies</li>
-        </ul>
+    <div class="pro-section">
+      <h3>🌟 Upgrade to Spendiva Pro</h3>
+      <p><strong>One-time purchase &bull; Lifetime access</strong></p>
+      <p>Unlock professional features with a single purchase — no subscription, no recurring fees:</p>
+      <ul>
+        <li><strong>Multi-Currency Expenses:</strong> Enter expenses in any currency with automatic conversion</li>
+        <li><strong>Unlimited Expense Splitting:</strong> Split with 5+ people (free: max 4)</li>
+        <li><strong>Corporate Payment Tracking:</strong> Separate business from personal expenses for easy reimbursement</li>
+        <li><strong>Professional PDF Reports:</strong> Detailed reports with charts and summaries</li>
+        <li><strong>CSV Export:</strong> Export all data for Excel or accounting software</li>
+        <li><strong>Daily Reminders:</strong> A smart daily notification that only fires on days you have an active trip — stops automatically when your trip ends</li>
+      </ul>
+    </div>
 
-        <h3>Key Features</h3>
-        <ul>
-          <li><strong>Fully Offline:</strong> No internet connection required - works everywhere without roaming charges</li>
-          <li><strong>No Login Required:</strong> Complete privacy - all data stored locally on your device</li>
-          <li><strong>Fast Expense Entry:</strong> Category selection, amount, split, and save in seconds</li>
-          <li><strong>6 Expense Categories:</strong> Meals, Transport, Stay, Fun, Coffee, Shopping with fixed subcategories for each</li>
-          <li><strong>People Splitting:</strong> Split with up to 4 people (free) or unlimited (Pro)</li>
-          <li><strong>Payment Methods:</strong> Track Personal expenses (free) and Corporate expenses (Pro)</li>
-          <li><strong>Multi-Currency Per Expense</strong><span class="pro-badge">PRO</span>: Enter expenses in different currencies within the same trip</li>
-          <li><strong>Date Flexibility:</strong> Add expenses for today, yesterday, or any custom date and time</li>
-          <li><strong>Trip Management:</strong> Create, edit, and archive trips with date ranges, purposes, and optional nicknames</li>
-          <li><strong>Currency Conversion:</strong> Support for 195+ world currencies with exchange rates</li>
-          <li><strong>Analytics Dashboard:</strong> Daily, weekly, and monthly spending reports</li>
-          <li><strong>Category Breakdown:</strong> See spending patterns by category with visual pie charts</li>
-          <li><strong>Notes & Details:</strong> Add notes (up to 25 characters) and subcategories to track expense details</li>
-          <li><strong>PDF Export</strong><span class="pro-badge">PRO</span>: Professional reports with charts and payment method breakdowns</li>
-          <li><strong>CSV Export</strong><span class="pro-badge">PRO</span>: Export expense data for further analysis</li>
-          <li><strong>Privacy First:</strong> All data stored locally on your device, no cloud sync required</li>
-        </ul>
-
-        <div class="note">
-          <strong>Exchange Rate Disclaimer:</strong> Exchange rates are approximate estimates based on historical data (January 2025) and should be independently verified for accuracy before making financial decisions. Rates are provided for convenience only and may not reflect current market values. The developer is not responsible for any financial losses resulting from inaccurate exchange rates.
-        </div>
-
-        <div class="note">
-          <strong>Data Responsibility:</strong> Users are solely responsible for backing up their expense data. While Spendiva stores data locally on your device for privacy, the developer is not liable for any data loss due to device failure, app updates, or other circumstances. Export your data regularly (Pro feature) to ensure you have backups.
-        </div>
-        <div class="highlight-box">
-          <strong>🌍 Fully Offline • No Internet Required</strong>
-          <p>Spendiva works completely offline while you travel. No roaming charges, no internet connection needed. Track expenses anywhere in the world without worrying about connectivity. Plus, no login required - your data stays 100% private and secure on your device.</p>
-        </div>
-        
-        <div class="pro-section">
-          <h3>🌟 Upgrade to Spendiva Pro</h3>
-          <p><strong>One-time purchase • Lifetime access</strong></p>
-          <p>Unlock professional features with a single purchase:</p>
-          <ul style="margin-left: 20px;">
-            <li><strong>Multi-Currency Expenses:</strong> Enter expenses in any currency with automatic conversion</li>
-            <li><strong>Unlimited Expense Splitting:</strong> Split with 5+ people (free: max 4)</li>
-            <li><strong>Corporate Payment Tracking:</strong> Separate business from personal expenses</li>
-            <li><strong>Professional PDF Reports:</strong> Export detailed reports with charts and summaries</li>
-            <li><strong>CSV Export:</strong> Export all data for Excel or accounting software</li>
-          </ul>
-        </div>
-
-        <h3>Why Choose Spendiva?</h3>
-        <div class="feature-grid">
-          <div class="feature-card">
-            <h4>📴 Works Offline</h4>
-            <p>No internet required. Track expenses anywhere without roaming charges or connectivity issues.</p>
-          </div>
-          <div class="feature-card">
-            <h4>🔒 No Login Required</h4>
-            <p>Your data stays on your device. No account creation, no cloud sync, complete privacy and security.</p>
-          </div>
-          <div class="feature-card">
-            <h4>⚡ Quick Entry</h4>
-            <p>Add expenses in under 3 seconds with our intuitive category-first design and custom numerical keyboard.</p>
-          </div>
-          <div class="feature-card">
-            <h4>💱 Multi-Currency Support</h4>
-            <p>Track expenses in 195+ currencies with automatic exchange rate conversion to your home currency.</p>
-          </div>
-          <div class="feature-card">
-            <h4>👥 Cost Splitting</h4>
-            <p>Easily split expenses among travel companions (up to 4 people free, unlimited with Pro).</p>
-          </div>
-          <div class="feature-card">
-            <h4>🗂️ Trip Organization</h4>
-            <p>Manage multiple trips simultaneously with trip nicknames and dedicated expense tracking for each destination.</p>
-          </div>
-          <div class="feature-card">
-            <h4>💳 Payment Methods</h4>
-            <p>Track personal and corporate expenses separately (corporate requires Pro).</p>
-          </div>
-          <div class="feature-card">
-            <h4>📊 Detailed Reports</h4>
-            <p>View daily, weekly, and monthly breakdowns with category analysis and spending trends.</p>
-          </div>
-          <div class="feature-card">
-            <h4>📱 iPad Optimized</h4>
-            <p>Beautiful layouts designed specifically for iPad with split-screen views and larger displays.</p>
-          </div>
-          <div class="feature-card">
-            <h4>🌐 Multilingual</h4>
-            <p>Full support for English, Spanish, and German with localized date and currency formatting.</p>
-          </div>
-        </div>
-
-
-
-        <div class="disclaimer-box">
-          <strong>⚠️ Important Disclaimer</strong>
-          <p><strong>Use at Your Own Risk:</strong> Spendiva is provided "as is" without warranties of any kind, express or implied. The developer is not liable for any damages, losses, or issues arising from the use of this application, including but not limited to data loss, financial errors, or compatibility issues.</p>
-          <p><strong>No Guarantees:</strong> While we strive to provide accurate currency conversion estimates and reliable functionality, exchange rates are approximate and should be independently verified for financial decisions. Features, compatibility, and functionality are subject to change at the developer's discretion.</p>
-          <p><strong>User Responsibility:</strong> You are solely responsible for the accuracy of your expense data and for backing up your information. The developer assumes no liability for data loss or inaccuracies.</p>
-          <p><strong>Financial Information:</strong> Always verify exchange rates and financial calculations independently. Do not rely solely on this app for important financial decisions or business expense reporting without verification.</p>
-        </div>
-
-        <a href="https://apps.apple.com/app/spendiva/id6753644966" class="button">Download on the App Store</a>
+    <h3>Why Choose Spendiva?</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>📴 Works Offline</h4>
+        <p>No internet required. Track expenses anywhere in the world without roaming charges or connectivity issues.</p>
       </div>
-
-      <!-- German -->
-      <div class="lang lang-de hidden">
-        <h2>Spendiva - Intelligenter Reise-Ausgaben-Tracker</h2>
-        <p>Verfolgen Sie Ihre Reiseausgaben mühelos. Perfekt für die Organisation von Reiseausgaben, das Aufteilen von Kosten mit Reisebegleitern und die Verwaltung mehrerer Währungen an verschiedenen Reisezielen.</p>
-        
-        
-
-        <h3>Perfekt Für</h3>
-        <ul>
-          <li>Alleinreisende, die Urlaubsausgaben verfolgen</li>
-          <li>Gruppen, die Kosten auf Reisen aufteilen</li>
-          <li>Geschäftsreisende, die Spesenabrechnungen verwalten (Pro)</li>
-          <li>Digitale Nomaden, die in mehreren Ländern arbeiten</li>
-          <li>Familien, die Urlaubsausgaben verwalten</li>
-          <li>Jeden, der international mit mehreren Währungen reist</li>
-        </ul>
-
-        <h3>Hauptfunktionen</h3>
-        <ul>
-          <li><strong>Vollständig Offline:</strong> Keine Internetverbindung erforderlich - funktioniert überall ohne Roaming-Gebühren</li>
-          <li><strong>Keine Anmeldung Erforderlich:</strong> Vollständige Privatsphäre - alle Daten lokal auf Ihrem Gerät gespeichert</li>
-          <li><strong>Schnelle Ausgabeneingabe:</strong> Kategorieauswahl, Betrag, Aufteilung und Speichern in Sekunden</li>
-          <li><strong>6 Ausgabenkategorien:</strong> Mahlzeiten, Transport, Unterkunft, Spaß, Kaffee, Einkaufen mit festen Unterkategorien für jede</li>
-          <li><strong>Personenaufteilung:</strong> Teilen Sie mit bis zu 4 Personen (kostenlos) oder unbegrenzt (Pro)</li>
-          <li><strong>Zahlungsmethoden:</strong> Verfolgen Sie private Ausgaben (kostenlos) und geschäftliche Ausgaben (Pro)</li>
-          <li><strong>Multi-Währung pro Ausgabe</strong><span class="pro-badge">PRO</span>: Geben Sie Ausgaben in verschiedenen Währungen innerhalb derselben Reise ein</li>
-          <li><strong>Datumsflexibilität:</strong> Fügen Sie Ausgaben für heute, gestern oder ein beliebiges Datum und Uhrzeit hinzu</li>
-          <li><strong>Reiseverwaltung:</strong> Erstellen, bearbeiten und archivieren Sie Reisen mit Datumsbereichen, Zwecken und optionalen Spitznamen</li>
-          <li><strong>Währungsumrechnung:</strong> Unterstützung für 195+ Weltwährungen mit Wechselkursen</li>
-          <li><strong>Analytics Dashboard:</strong> Tägliche, wöchentliche und monatliche Ausgabenberichte</li>
-          <li><strong>Kategorienaufschlüsselung:</strong> Sehen Sie Ausgabenmuster nach Kategorien mit visuellen Kreisdiagrammen</li>
-          <li><strong>Notizen & Details:</strong> Fügen Sie Notizen (bis zu 25 Zeichen) und Unterkategorien hinzu</li>
-          <li><strong>PDF-Export</strong><span class="pro-badge">PRO</span>: Professionelle Berichte mit Diagrammen und Zahlungsmethoden-Aufschlüsselung</li>
-          <li><strong>CSV-Export</strong><span class="pro-badge">PRO</span>: Exportieren Sie Ausgabendaten für weitere Analysen</li>
-          <li><strong>Datenschutz Zuerst:</strong> Alle Daten werden lokal auf Ihrem Gerät gespeichert, keine Cloud-Synchronisierung erforderlich</li>
-        </ul>
-
-        <div class="note">
-          <strong>Wechselkurs-Haftungsausschluss:</strong> Wechselkurse sind ungefähre Schätzungen basierend auf historischen Daten (Januar 2025) und sollten unabhängig überprüft werden, bevor finanzielle Entscheidungen getroffen werden. Kurse werden nur der Einfachheit halber bereitgestellt und spiegeln möglicherweise nicht die aktuellen Marktwerte wider. Der Entwickler ist nicht verantwortlich für finanzielle Verluste aufgrund ungenauer Wechselkurse.
-        </div>
-
-        <div class="note">
-          <strong>Datenverantwortung:</strong> Benutzer sind allein verantwortlich für die Sicherung ihrer Ausgabendaten. Während Spendiva Daten aus Datenschutzgründen lokal auf Ihrem Gerät speichert, haftet der Entwickler nicht für Datenverluste aufgrund von Geräteausfällen, App-Updates oder anderen Umständen. Exportieren Sie Ihre Daten regelmäßig (Pro-Funktion), um sicherzustellen, dass Sie Backups haben.
-        </div>
-        <div class="highlight-box">
-          <strong>🌍 Vollständig Offline • Kein Internet Erforderlich</strong>
-          <p>Spendiva funktioniert komplett offline während Sie reisen. Keine Roaming-Gebühren, keine Internetverbindung erforderlich. Verfolgen Sie Ausgaben überall auf der Welt ohne sich um Konnektivität zu sorgen. Außerdem ist keine Anmeldung erforderlich - Ihre Daten bleiben 100% privat und sicher auf Ihrem Gerät.</p>
-        </div>
-        
-        <div class="pro-section">
-          <h3>🌟 Upgrade auf Spendiva Pro</h3>
-          <p><strong>Einmaliger Kauf • Lebenslanger Zugriff</strong></p>
-          <p>Schalten Sie professionelle Funktionen mit einem einzigen Kauf frei:</p>
-          <ul style="margin-left: 20px;">
-            <li><strong>Multi-Währungs-Ausgaben:</strong> Geben Sie Ausgaben in jeder Währung mit automatischer Umrechnung ein</li>
-            <li><strong>Unbegrenzte Ausgabenaufteilung:</strong> Teilen Sie mit 5+ Personen (kostenlos: max 4)</li>
-            <li><strong>Firmen-Zahlungsverfolgung:</strong> Trennen Sie geschäftliche von privaten Ausgaben</li>
-            <li><strong>Professionelle PDF-Berichte:</strong> Exportieren Sie detaillierte Berichte mit Diagrammen und Zusammenfassungen</li>
-            <li><strong>CSV-Export:</strong> Exportieren Sie alle Daten für Excel oder Buchhaltungssoftware</li>
-          </ul>
-        </div>
-
-        <h3>Warum Spendiva Wählen?</h3>
-        <div class="feature-grid">
-          <div class="feature-card">
-            <h4>📴 Funktioniert Offline</h4>
-            <p>Kein Internet erforderlich. Verfolgen Sie Ausgaben überall ohne Roaming-Gebühren oder Konnektivitätsprobleme.</p>
-          </div>
-          <div class="feature-card">
-            <h4>🔒 Keine Anmeldung Erforderlich</h4>
-            <p>Ihre Daten bleiben auf Ihrem Gerät. Keine Kontoerstellung, keine Cloud-Synchronisierung, vollständige Privatsphäre und Sicherheit.</p>
-          </div>
-          <div class="feature-card">
-            <h4>⚡ Schnelle Eingabe</h4>
-            <p>Fügen Sie Ausgaben in unter 3 Sekunden hinzu mit unserem intuitiven kategorie-ersten Design und angepasster numerischer Tastatur.</p>
-          </div>
-          <div class="feature-card">
-            <h4>💱 Multi-Währungs-Unterstützung</h4>
-            <p>Verfolgen Sie Ausgaben in 195+ Währungen mit automatischer Wechselkursumrechnung in Ihre Heimatwährung.</p>
-          </div>
-          <div class="feature-card">
-            <h4>👥 Kostenaufteilung</h4>
-            <p>Teilen Sie Ausgaben einfach unter Reisebegleitern auf (bis zu 4 Personen kostenlos, unbegrenzt mit Pro).</p>
-          </div>
-          <div class="feature-card">
-            <h4>🗂️ Reiseorganisation</h4>
-            <p>Verwalten Sie mehrere Reisen gleichzeitig mit Reise-Spitznamen und dedizierter Ausgabenverfolgung für jedes Ziel.</p>
-          </div>
-          <div class="feature-card">
-            <h4>💳 Zahlungsmethoden</h4>
-            <p>Verfolgen Sie private und geschäftliche Ausgaben separat (geschäftlich erfordert Pro).</p>
-          </div>
-          <div class="feature-card">
-            <h4>📊 Detaillierte Berichte</h4>
-            <p>Sehen Sie tägliche, wöchentliche und monatliche Aufschlüsselungen mit Kategorienanalyse und Ausgabentrends.</p>
-          </div>
-          <div class="feature-card">
-            <h4>📱 iPad-Optimiert</h4>
-            <p>Schöne Layouts speziell für iPad mit Split-Screen-Ansichten und größeren Displays.</p>
-          </div>
-          <div class="feature-card">
-            <h4>🌐 Mehrsprachig</h4>
-            <p>Volle Unterstützung für Englisch, Spanisch und Deutsch mit lokalisierten Datums- und Währungsformaten.</p>
-          </div>
-        </div>
-
-
-
-        <div class="disclaimer-box">
-          <strong>⚠️ Wichtiger Haftungsausschluss</strong>
-          <p><strong>Nutzung auf eigenes Risiko:</strong> Spendiva wird „wie besehen" ohne jegliche Garantie bereitgestellt, weder ausdrücklich noch stillschweigend. Der Entwickler haftet nicht für Schäden, Verluste oder Probleme, die sich aus der Nutzung dieser Anwendung ergeben, einschließlich, aber nicht beschränkt auf Datenverlust, finanzielle Fehler oder Kompatibilitätsprobleme.</p>
-          <p><strong>Keine Garantien:</strong> Obwohl wir uns bemühen, genaue Währungsumrechnungsschätzungen und zuverlässige Funktionalität bereitzustellen, sind Wechselkurse ungefähr und sollten für finanzielle Entscheidungen unabhängig überprüft werden. Funktionen, Kompatibilität und Funktionalität können nach Ermessen des Entwicklers geändert werden.</p>
-          <p><strong>Benutzerverantwortung:</strong> Sie sind allein verantwortlich für die Genauigkeit Ihrer Ausgabendaten und für die Sicherung Ihrer Informationen. Der Entwickler übernimmt keine Haftung für Datenverlust oder Ungenauigkeiten.</p>
-          <p><strong>Finanzinformationen:</strong> Überprüfen Sie Wechselkurse und Finanzberechnungen immer unabhängig. Verlassen Sie sich nicht ausschließlich auf diese App für wichtige finanzielle Entscheidungen oder Spesenabrechnungen ohne Überprüfung.</p>
-        </div>
-
-        <a href="https://apps.apple.com/app/spendiva/id6753644966" class="button">Im App Store herunterladen</a>
+      <div class="feature-card">
+        <h4>🔒 No Login Required</h4>
+        <p>Your data stays on your device. No account creation, no cloud sync — complete privacy and security.</p>
       </div>
-
-      <!-- Spanish -->
-      <div class="lang lang-es hidden">
-        <h2>Spendiva - Rastreador Inteligente de Gastos de Viaje</h2>
-        <p>Rastrea tus gastos de viaje sin esfuerzo. Perfecto para organizar gastos de viaje, dividir costos con compañeros de viaje y gestionar múltiples monedas en diferentes destinos.</p>
-        
-        
-
-        <h3>Perfecto Para</h3>
-        <ul>
-          <li>Viajeros solitarios rastreando gastos de vacaciones</li>
-          <li>Grupos dividiendo costos en viajes</li>
-          <li>Viajeros de negocios gestionando informes de gastos (Pro)</li>
-          <li>Nómadas digitales trabajando en múltiples países</li>
-          <li>Familias gestionando gastos de vacaciones</li>
-          <li>Cualquiera viajando internacionalmente con múltiples monedas</li>
-        </ul>
-
-        <h3>Características Principales</h3>
-        <ul>
-          <li><strong>Completamente Offline:</strong> No requiere conexión a internet - funciona en todas partes sin cargos de roaming</li>
-          <li><strong>No Requiere Inicio de Sesión:</strong> Privacidad completa - todos los datos almacenados localmente en tu dispositivo</li>
-          <li><strong>Entrada Rápida de Gastos:</strong> Selección de categoría, monto, división y guardado en segundos</li>
-          <li><strong>6 Categorías de Gastos:</strong> Comidas, Transporte, Alojamiento, Diversión, Café, Compras con subcategorías fijas para cada una</li>
-          <li><strong>División de Personas:</strong> Divide con hasta 4 personas (gratis) o ilimitado (Pro)</li>
-          <li><strong>Métodos de Pago:</strong> Rastrea gastos Personales (gratis) y Corporativos (Pro)</li>
-          <li><strong>Multi-Moneda por Gasto</strong><span class="pro-badge">PRO</span>: Ingresa gastos en diferentes monedas dentro del mismo viaje</li>
-          <li><strong>Flexibilidad de Fecha:</strong> Agrega gastos para hoy, ayer o cualquier fecha y hora personalizada</li>
-          <li><strong>Gestión de Viajes:</strong> Crea, edita y archiva viajes con rangos de fechas, propósitos y apodos opcionales</li>
-          <li><strong>Conversión de Moneda:</strong> Soporte para más de 195 monedas mundiales con tipos de cambio</li>
-          <li><strong>Panel de Análisis:</strong> Informes de gastos diarios, semanales y mensuales</li>
-          <li><strong>Desglose por Categoría:</strong> Ve patrones de gasto por categoría con gráficos circulares visuales</li>
-          <li><strong>Notas y Detalles:</strong> Agrega notas (hasta 25 caracteres) y subcategorías</li>
-          <li><strong>Exportación PDF</strong><span class="pro-badge">PRO</span>: Informes profesionales con gráficos y desglose de métodos de pago</li>
-          <li><strong>Exportación CSV</strong><span class="pro-badge">PRO</span>: Exporta datos de gastos para análisis adicional</li>
-          <li><strong>Privacidad Primero:</strong> Todos los datos se almacenan localmente en tu dispositivo, no se requiere sincronización en la nube</li>
-        </ul>
-
-        <div class="note">
-          <strong>Aviso sobre Tipos de Cambio:</strong> Los tipos de cambio son estimaciones aproximadas basadas en datos históricos (enero de 2025) y deben verificarse independientemente antes de tomar decisiones financieras. Las tasas se proporcionan solo por conveniencia y pueden no reflejar los valores actuales del mercado. El desarrollador no es responsable de pérdidas financieras resultantes de tipos de cambio inexactos.
-        </div>
-
-        <div class="note">
-          <strong>Responsabilidad de Datos:</strong> Los usuarios son los únicos responsables de hacer copias de seguridad de sus datos de gastos. Aunque Spendiva almacena datos localmente en su dispositivo por privacidad, el desarrollador no es responsable de ninguna pérdida de datos debido a fallas del dispositivo, actualizaciones de la aplicación u otras circunstancias. Exporte sus datos regularmente (función Pro) para asegurarse de tener copias de seguridad.
-        </div>
-        <div class="highlight-box">
-          <strong>🌍 Completamente Offline • No Requiere Internet</strong>
-          <p>Spendiva funciona completamente sin conexión mientras viajas. Sin cargos de roaming, sin necesidad de conexión a internet. Rastrea gastos en cualquier lugar del mundo sin preocuparte por la conectividad. Además, no requiere inicio de sesión - tus datos permanecen 100% privados y seguros en tu dispositivo.</p>
-        </div>
-        
-        <div class="pro-section">
-          <h3>🌟 Actualiza a Spendiva Pro</h3>
-          <p><strong>Compra única • Acceso de por vida</strong></p>
-          <p>Desbloquea funciones profesionales con una sola compra:</p>
-          <ul style="margin-left: 20px;">
-            <li><strong>Gastos Multi-Moneda:</strong> Ingresa gastos en cualquier moneda con conversión automática</li>
-            <li><strong>División Ilimitada de Gastos:</strong> Divide con 5+ personas (gratis: máx 4)</li>
-            <li><strong>Seguimiento de Pagos Corporativos:</strong> Separa gastos empresariales de personales</li>
-            <li><strong>Informes PDF Profesionales:</strong> Exporta informes detallados con gráficos y resúmenes</li>
-            <li><strong>Exportación CSV:</strong> Exporta todos los datos para Excel o software de contabilidad</li>
-          </ul>
-        </div>
-
-        <h3>¿Por Qué Elegir Spendiva?</h3>
-        <div class="feature-grid">
-          <div class="feature-card">
-            <h4>📴 Funciona Sin Conexión</h4>
-            <p>No requiere internet. Rastrea gastos en cualquier lugar sin cargos de roaming o problemas de conectividad.</p>
-          </div>
-          <div class="feature-card">
-            <h4>🔒 No Requiere Inicio de Sesión</h4>
-            <p>Tus datos permanecen en tu dispositivo. Sin creación de cuenta, sin sincronización en la nube, privacidad y seguridad completas.</p>
-          </div>
-          <div class="feature-card">
-            <h4>⚡ Entrada Rápida</h4>
-            <p>Agrega gastos en menos de 3 segundos con nuestro diseño intuitivo de categoría primero y teclado numérico personalizado.</p>
-          </div>
-          <div class="feature-card">
-            <h4>💱 Soporte Multi-Moneda</h4>
-            <p>Rastrea gastos en más de 195 monedas con conversión automática de tipo de cambio a tu moneda local.</p>
-          </div>
-          <div class="feature-card">
-            <h4>👥 División de Costos</h4>
-            <p>Divide fácilmente los gastos entre compañeros de viaje (hasta 4 personas gratis, ilimitado con Pro).</p>
-          </div>
-          <div class="feature-card">
-            <h4>🗂️ Organización de Viajes</h4>
-            <p>Gestiona múltiples viajes simultáneamente con apodos de viaje y seguimiento de gastos dedicado para cada destino.</p>
-          </div>
-          <div class="feature-card">
-            <h4>💳 Métodos de Pago</h4>
-            <p>Rastrea gastos personales y corporativos por separado (corporativo requiere Pro).</p>
-          </div>
-          <div class="feature-card">
-            <h4>📊 Informes Detallados</h4>
-            <p>Ve desgloses diarios, semanales y mensuales con análisis de categorías y tendencias de gastos.</p>
-          </div>
-          <div class="feature-card">
-            <h4>📱 Optimizado para iPad</h4>
-            <p>Diseños hermosos específicamente para iPad con vistas de pantalla dividida y displays más grandes.</p>
-          </div>
-          <div class="feature-card">
-            <h4>🌐 Multilingüe</h4>
-            <p>Soporte completo para inglés, español y alemán con formato de fecha y moneda localizado.</p>
-          </div>
-        </div>
-
-
-
-        <div class="disclaimer-box">
-          <strong>⚠️ Descargo de Responsabilidad Importante</strong>
-          <p><strong>Uso Bajo Su Propio Riesgo:</strong> Spendiva se proporciona "tal cual" sin garantías de ningún tipo, ya sean expresas o implícitas. El desarrollador no es responsable de ningún daño, pérdida o problema que surja del uso de esta aplicación, incluyendo pero no limitado a pérdida de datos, errores financieros o problemas de compatibilidad.</p>
-          <p><strong>Sin Garantías:</strong> Aunque nos esforzamos por proporcionar estimaciones precisas de conversión de divisas y funcionalidad confiable, los tipos de cambio son aproximados y deben verificarse independientemente para decisiones financieras. Las características, compatibilidad y funcionalidad están sujetas a cambios a discreción del desarrollador.</p>
-          <p><strong>Responsabilidad del Usuario:</strong> Usted es el único responsable de la precisión de sus datos de gastos y de hacer copias de seguridad de su información. El desarrollador no asume ninguna responsabilidad por pérdida de datos o inexactitudes.</p>
-          <p><strong>Información Financiera:</strong> Siempre verifique los tipos de cambio y cálculos financieros de forma independiente. No confíe únicamente en esta aplicación para decisiones financieras importantes o informes de gastos comerciales sin verificación.</p>
-        </div>
-
-        <a href="https://apps.apple.com/app/spendiva/id6753644966" class="button">Descargar en el App Store</a>
+      <div class="feature-card">
+        <h4>⚡ 3-Second Entry</h4>
+        <p>Add expenses in seconds with our intuitive category-first design and custom numeric keyboard.</p>
+      </div>
+      <div class="feature-card">
+        <h4>💱 195+ Currencies</h4>
+        <p>Full exchange rate support across all world currencies, automatically converting to your home currency.</p>
+      </div>
+      <div class="feature-card">
+        <h4>👥 Cost Splitting</h4>
+        <p>Easily split expenses among travel companions — up to 4 people free, unlimited with Pro.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🗂️ Trip Organization</h4>
+        <p>Manage multiple trips with custom nicknames, date ranges, and purposes. Archive completed trips cleanly.</p>
+      </div>
+      <div class="feature-card">
+        <h4>💳 Payment Methods</h4>
+        <p>Track personal and corporate expenses separately. Great for business travel reimbursement (Pro).</p>
+      </div>
+      <div class="feature-card">
+        <h4>📊 Detailed Reports</h4>
+        <p>Daily, weekly, and monthly breakdowns with category analysis, per-capita totals, and spending trends.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🔔 Smart Reminders</h4>
+        <p>Daily notification to log expenses — automatically active only on trip days (Pro).</p>
+      </div>
+      <div class="feature-card">
+        <h4>📱 iPad Optimized</h4>
+        <p>Beautiful layouts designed for iPad with split-screen views and larger display support.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🌐 4 Languages</h4>
+        <p>English, Spanish, German, and French — with country names displayed in your device language.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🇨🇭 Made in Switzerland</h4>
+        <p>Crafted with Swiss precision. Privacy-first, reliable, and designed for real travelers.</p>
       </div>
     </div>
 
-    <!-- SUPPORT SECTION -->
-    <div id="support" class="section hidden">
-      <div class="lang lang-en">
-        <h2>Support & Help</h2>
-        <p>Need help with Spendiva? We're here to assist you.</p>
-        
-        <h3>Contact</h3>
-        <p>Email: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
-        <p>We typically respond within 24-48 hours, but response times are not guaranteed.</p>
-        
-        <!-- Rest of support content stays the same -->
-      </div>
-
-      <div class="lang lang-de hidden">
-        <h2>Support & Hilfe</h2>
-        <p>Benötigen Sie Hilfe mit Spendiva? Wir sind für Sie da.</p>
-        
-        <h3>Kontakt</h3>
-        <p>E-Mail: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
-        <p>Wir antworten normalerweise innerhalb von 24-48 Stunden, aber Antwortzeiten sind nicht garantiert.</p>
-      </div>
-
-      <div class="lang lang-es hidden">
-        <h2>Soporte y Ayuda</h2>
-        <p>¿Necesitas ayuda con Spendiva? Estamos aquí para asistirte.</p>
-        
-        <h3>Contacto</h3>
-        <p>Email: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
-        <p>Normalmente respondemos en 24-48 horas, pero los tiempos de respuesta no están garantizados.</p>
-      </div>
+    <div class="disclaimer-box">
+      <strong>⚠️ Important Disclaimer</strong>
+      <p><strong>Use at Your Own Risk:</strong> Spendiva is provided "as is" without warranties of any kind, express or implied. The developer is not liable for any damages, losses, or issues arising from the use of this application, including but not limited to data loss, financial errors, or compatibility issues.</p>
+      <p><strong>Exchange Rates:</strong> Rates are approximate and should be independently verified for financial decisions. Always verify exchange rates and financial calculations independently — do not rely solely on this app for important financial decisions.</p>
+      <p><strong>User Responsibility:</strong> You are solely responsible for the accuracy of your expense data and for backing up your information. The developer assumes no liability for data loss or inaccuracies.</p>
     </div>
 
-    <!-- PRIVACY SECTION - stays the same -->
-    <div id="privacy" class="section hidden">
-      <!-- Your existing privacy policy content -->
-    </div>
-
+    <a href="https://apps.apple.com/app/spendiva/id6753644966" class="button">Download on the App Store</a>
   </div>
 
-  <footer>
-    <p>© 2025 Spendiva by Andres Wetzel • <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
-    <p style="font-size: 0.85em; margin-top: 10px;">
-      <strong>Legal Disclaimer:</strong> Spendiva is provided "as is" without warranties. Features and compatibility subject to change. 
-      Exchange rates are estimates only. Users are responsible for data accuracy and backups. 
-      Use at your own risk. Developer not liable for damages or data loss.
-    </p>
-  </footer>
+  <!-- ── GERMAN ── -->
+  <div class="lang lang-de hidden">
+    <h2>Spendiva — Intelligenter Reise-Ausgaben-Tracker</h2>
+    <p>Verfolgen Sie Ihre Reiseausgaben mühelos. Perfekt für die Organisation von Reiseausgaben, das Aufteilen von Kosten mit Reisebegleitern und die Verwaltung mehrerer Währungen — vollständig offline und ohne Konto.</p>
+
+    <div class="highlight-box">
+      <strong>🌍 Vollständig Offline &bull; Kein Internet &bull; Keine Anmeldung</strong>
+      <p>Spendiva funktioniert komplett offline während Sie reisen. Keine Roaming-Gebühren, keine Internetverbindung nötig. Ihre Daten bleiben 100% privat und sicher auf Ihrem Gerät — werden nirgends hochgeladen.</p>
+    </div>
+
+    <h3>Perfekt Für</h3>
+    <ul>
+      <li>Alleinreisende, die Urlaubsausgaben verfolgen</li>
+      <li>Gruppen, die Kosten auf Reisen aufteilen</li>
+      <li>Geschäftsreisende, die Spesenabrechnungen verwalten <span class="pro-badge">PRO</span></li>
+      <li>Digitale Nomaden, die in mehreren Ländern arbeiten</li>
+      <li>Familien, die Urlaubsbudgets verwalten</li>
+      <li>Jeden, der international mit mehreren Währungen reist</li>
+    </ul>
+
+    <h3>Hauptfunktionen</h3>
+    <ul>
+      <li><strong>Vollständig Offline:</strong> Funktioniert überall — ohne Internet, ohne Roaming-Gebühren</li>
+      <li><strong>Keine Anmeldung:</strong> Alle Daten lokal auf Ihrem Gerät gespeichert, nie in der Cloud</li>
+      <li><strong>3-Sekunden-Eingabe:</strong> Kategorie tippen → Betrag eingeben → fertig</li>
+      <li><strong>6 Ausgabenkategorien:</strong> Mahlzeiten, Transport, Unterkunft, Spaß, Kaffee, Einkaufen — mit detaillierten Unterkategorien</li>
+      <li><strong>Ausgabenaufteilung:</strong> Aufteilen mit bis zu 4 Personen (kostenlos) oder unbegrenzt <span class="pro-badge">PRO</span></li>
+      <li><strong>Zahlungsmethoden:</strong> Privat (kostenlos) und Geschäftlich <span class="pro-badge">PRO</span></li>
+      <li><strong>Multi-Währung pro Ausgabe</strong> <span class="pro-badge">PRO</span>: Ausgaben in beliebiger Währung mit automatischer Umrechnung</li>
+      <li><strong>Datumsflexibilität:</strong> Ausgaben für heute, gestern oder ein beliebiges Datum erfassen</li>
+      <li><strong>Reiseverwaltung:</strong> Reisen erstellen, bearbeiten und archivieren mit Datumsbereichen und Spitznamen</li>
+      <li><strong>195+ Währungen:</strong> Vollständige Unterstützung mit Wechselkursumrechnung in Ihre Heimatwährung</li>
+      <li><strong>Analyse-Dashboard:</strong> Tägliche, wöchentliche und monatliche Ausgabenberichte</li>
+      <li><strong>Kategorienaufschlüsselung:</strong> Kreisdiagramme zeigen Ausgabenmuster nach Kategorie</li>
+      <li><strong>Unterkategorien:</strong> Lang drücken für Details (z. B. „Restaurant" unter Mahlzeiten)</li>
+      <li><strong>Notizen:</strong> Kurze Notizen zu jeder Ausgabe hinzufügen</li>
+      <li><strong>Jederzeit bearbeiten:</strong> Ausgabe wischen zum Bearbeiten von Betrag, Datum, Notiz oder Aufteilung</li>
+      <li><strong>PDF-Export</strong> <span class="pro-badge">PRO</span>: Professionelle Berichte mit Diagrammen und Zahlungsaufschlüsselung</li>
+      <li><strong>CSV-Export</strong> <span class="pro-badge">PRO</span>: Alle Daten für Excel oder Buchhaltungssoftware exportieren</li>
+      <li><strong>Tägliche Erinnerungen</strong> <span class="pro-badge">PRO</span>: Tägliche Benachrichtigung zum Erfassen Ihrer Ausgaben — wird nur an aktiven Reisetagen ausgelöst</li>
+      <li><strong>Lokalisierte Ländernamen:</strong> Länder- und Zielname in Ihrer Gerätesprache angezeigt</li>
+      <li><strong>iPad-Optimiert:</strong> Schöne Split-Screen-Layouts für größere Displays</li>
+      <li><strong>4 Sprachen:</strong> Englisch, Spanisch, Deutsch und Französisch mit lokalisierten Datums- und Währungsformaten</li>
+      <li><strong>Made in Switzerland 🇨🇭</strong></li>
+    </ul>
+
+    <div class="note">
+      <strong>Wechselkurs-Haftungsausschluss:</strong> Wechselkurse sind ungefähre Schätzungen basierend auf historischen Daten (März 2026) und sollten unabhängig überprüft werden, bevor finanzielle Entscheidungen getroffen werden. Der Entwickler ist nicht verantwortlich für finanzielle Verluste aufgrund ungenauer Wechselkurse.
+    </div>
+    <div class="note">
+      <strong>Datenverantwortung:</strong> Benutzer sind allein verantwortlich für die Sicherung ihrer Ausgabendaten. Der Entwickler haftet nicht für Datenverluste. Exportieren Sie Ihre Daten regelmäßig (Pro-Funktion) um Sicherungskopien zu erstellen.
+    </div>
+
+    <div class="pro-section">
+      <h3>🌟 Upgrade auf Spendiva Pro</h3>
+      <p><strong>Einmaliger Kauf &bull; Lebenslanger Zugriff</strong></p>
+      <p>Professionelle Funktionen mit einem einzigen Kauf freischalten — kein Abonnement, keine wiederkehrenden Gebühren:</p>
+      <ul>
+        <li><strong>Multi-Währungs-Ausgaben:</strong> Ausgaben in beliebiger Währung mit automatischer Umrechnung</li>
+        <li><strong>Unbegrenzte Ausgabenaufteilung:</strong> Aufteilen mit 5+ Personen (kostenlos: max. 4)</li>
+        <li><strong>Firmen-Zahlungsverfolgung:</strong> Geschäftliche von privaten Ausgaben trennen</li>
+        <li><strong>Professionelle PDF-Berichte:</strong> Detaillierte Berichte mit Diagrammen und Zusammenfassungen</li>
+        <li><strong>CSV-Export:</strong> Alle Daten für Excel oder Buchhaltungssoftware exportieren</li>
+        <li><strong>Tägliche Erinnerungen:</strong> Smarte Benachrichtigung, die nur an aktiven Reisetagen ausgelöst wird — endet automatisch wenn die Reise endet</li>
+      </ul>
+    </div>
+
+    <h3>Warum Spendiva?</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>📴 Offline</h4>
+        <p>Kein Internet nötig. Ausgaben überall verfolgen ohne Roaming-Gebühren.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🔒 Keine Anmeldung</h4>
+        <p>Daten bleiben auf Ihrem Gerät. Keine Kontoerstellung, keine Cloud — vollständige Privatsphäre.</p>
+      </div>
+      <div class="feature-card">
+        <h4>⚡ 3-Sekunden-Eingabe</h4>
+        <p>Ausgaben in Sekunden hinzufügen mit intuitivem Kategorie-Design und angepasster Tastatur.</p>
+      </div>
+      <div class="feature-card">
+        <h4>💱 195+ Währungen</h4>
+        <p>Vollständige Wechselkursunterstützung mit automatischer Umrechnung in Ihre Heimatwährung.</p>
+      </div>
+      <div class="feature-card">
+        <h4>👥 Kostenaufteilung</h4>
+        <p>Ausgaben aufteilen mit bis zu 4 Personen kostenlos, unbegrenzt mit Pro.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🗂️ Reiseorganisation</h4>
+        <p>Mehrere Reisen verwalten mit Spitznamen und Datumsbereichen. Abgeschlossene Reisen archivieren.</p>
+      </div>
+      <div class="feature-card">
+        <h4>💳 Zahlungsmethoden</h4>
+        <p>Private und geschäftliche Ausgaben separat verfolgen (Pro).</p>
+      </div>
+      <div class="feature-card">
+        <h4>📊 Detaillierte Berichte</h4>
+        <p>Tägliche, wöchentliche und monatliche Aufschlüsselungen mit Kategorienanalyse.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🔔 Smarte Erinnerungen</h4>
+        <p>Tägliche Benachrichtigung — nur aktiv an Tagen mit einer aktiven Reise (Pro).</p>
+      </div>
+      <div class="feature-card">
+        <h4>📱 iPad-Optimiert</h4>
+        <p>Schöne Split-Screen-Layouts speziell für iPad-Displays.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🌐 4 Sprachen</h4>
+        <p>Englisch, Spanisch, Deutsch und Französisch — Ländernamen in Ihrer Gerätesprache.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🇨🇭 Made in Switzerland</h4>
+        <p>Mit Schweizer Präzision entwickelt. Datenschutz zuerst, zuverlässig, für echte Reisende.</p>
+      </div>
+    </div>
+
+    <div class="disclaimer-box">
+      <strong>⚠️ Wichtiger Haftungsausschluss</strong>
+      <p><strong>Nutzung auf eigenes Risiko:</strong> Spendiva wird „wie besehen" ohne Garantie bereitgestellt. Der Entwickler haftet nicht für Schäden, Verluste oder Probleme aus der Nutzung dieser Anwendung.</p>
+      <p><strong>Wechselkurse:</strong> Kurse sind Schätzungen und sollten für finanzielle Entscheidungen unabhängig überprüft werden.</p>
+      <p><strong>Benutzerverantwortung:</strong> Sie sind allein verantwortlich für die Genauigkeit Ihrer Ausgabendaten und deren Sicherung.</p>
+    </div>
+
+    <a href="https://apps.apple.com/app/spendiva/id6753644966" class="button">Im App Store herunterladen</a>
+  </div>
+
+  <!-- ── SPANISH ── -->
+  <div class="lang lang-es hidden">
+    <h2>Spendiva — Rastreador Inteligente de Gastos de Viaje</h2>
+    <p>Rastrea tus gastos de viaje sin esfuerzo. Perfecto para organizar gastos de viaje, dividir costos con compañeros y gestionar múltiples monedas — completamente sin conexión y sin cuenta.</p>
+
+    <div class="highlight-box">
+      <strong>🌍 Completamente Offline &bull; Sin Internet &bull; Sin Cuenta</strong>
+      <p>Spendiva funciona completamente sin conexión. Sin cargos de roaming, sin internet. Tus datos permanecen 100% privados y seguros en tu dispositivo — nunca se suben a ningún servidor.</p>
+    </div>
+
+    <h3>Perfecto Para</h3>
+    <ul>
+      <li>Viajeros solitarios rastreando gastos de vacaciones</li>
+      <li>Grupos dividiendo costos en viajes</li>
+      <li>Viajeros de negocios gestionando informes de gastos <span class="pro-badge">PRO</span></li>
+      <li>Nómadas digitales trabajando en múltiples países</li>
+      <li>Familias gestionando presupuestos de vacaciones</li>
+      <li>Cualquiera viajando internacionalmente con múltiples monedas</li>
+    </ul>
+
+    <h3>Características Principales</h3>
+    <ul>
+      <li><strong>Completamente Offline:</strong> Funciona en todas partes — sin internet, sin cargos de roaming</li>
+      <li><strong>Sin Inicio de Sesión:</strong> Todos los datos almacenados localmente, nunca en la nube</li>
+      <li><strong>Entrada en 3 Segundos:</strong> Toca categoría → ingresa monto → listo</li>
+      <li><strong>6 Categorías de Gastos:</strong> Comidas, Transporte, Alojamiento, Diversión, Café, Compras — con subcategorías detalladas</li>
+      <li><strong>División de Gastos:</strong> Divide con hasta 4 personas (gratis) o ilimitado <span class="pro-badge">PRO</span></li>
+      <li><strong>Métodos de Pago:</strong> Personal (gratis) y Corporativo <span class="pro-badge">PRO</span></li>
+      <li><strong>Multi-Moneda por Gasto</strong> <span class="pro-badge">PRO</span>: Ingresa gastos en cualquier moneda con conversión automática</li>
+      <li><strong>Flexibilidad de Fecha:</strong> Registra gastos para hoy, ayer o cualquier fecha personalizada</li>
+      <li><strong>Gestión de Viajes:</strong> Crea, edita y archiva viajes con rangos de fechas y apodos opcionales</li>
+      <li><strong>195+ Monedas:</strong> Soporte completo con conversión de tipo de cambio a tu moneda local</li>
+      <li><strong>Panel de Análisis:</strong> Informes diarios, semanales y mensuales</li>
+      <li><strong>Desglose por Categoría:</strong> Gráficos circulares que muestran patrones de gasto</li>
+      <li><strong>Subcategorías:</strong> Mantén pulsada cualquier categoría para más detalles</li>
+      <li><strong>Notas:</strong> Añade notas cortas a cualquier gasto</li>
+      <li><strong>Edición en Cualquier Momento:</strong> Desliza cualquier gasto para editar monto, fecha, nota o división</li>
+      <li><strong>Exportación PDF</strong> <span class="pro-badge">PRO</span>: Informes profesionales con gráficos y desgloses</li>
+      <li><strong>Exportación CSV</strong> <span class="pro-badge">PRO</span>: Exporta todos los datos para Excel o software de contabilidad</li>
+      <li><strong>Recordatorios Diarios</strong> <span class="pro-badge">PRO</span>: Notificación diaria para registrar gastos — solo activa los días con un viaje activo</li>
+      <li><strong>Nombres de Países Localizados:</strong> Nombres de países mostrados en el idioma de tu dispositivo</li>
+      <li><strong>Optimizado para iPad:</strong> Diseños de pantalla dividida para pantallas grandes</li>
+      <li><strong>4 Idiomas:</strong> Inglés, español, alemán y francés con formatos de fecha y moneda localizados</li>
+      <li><strong>Made in Switzerland 🇨🇭</strong></li>
+    </ul>
+
+    <div class="note">
+      <strong>Aviso sobre Tipos de Cambio:</strong> Los tipos de cambio son estimaciones aproximadas basadas en datos históricos (marzo de 2026) y deben verificarse independientemente antes de tomar decisiones financieras. El desarrollador no es responsable de pérdidas financieras derivadas de tipos de cambio inexactos.
+    </div>
+    <div class="note">
+      <strong>Responsabilidad de Datos:</strong> Los usuarios son los únicos responsables de hacer copias de seguridad de sus datos. El desarrollador no es responsable de ninguna pérdida de datos. Exporta tus datos regularmente (función Pro) para mantener respaldos.
+    </div>
+
+    <div class="pro-section">
+      <h3>🌟 Actualiza a Spendiva Pro</h3>
+      <p><strong>Compra única &bull; Acceso de por vida</strong></p>
+      <p>Desbloquea funciones profesionales con una sola compra — sin suscripción, sin cargos recurrentes:</p>
+      <ul>
+        <li><strong>Gastos Multi-Moneda:</strong> Ingresa gastos en cualquier moneda con conversión automática</li>
+        <li><strong>División Ilimitada:</strong> Divide con 5+ personas (gratis: máx 4)</li>
+        <li><strong>Seguimiento de Pagos Corporativos:</strong> Separa gastos empresariales de personales</li>
+        <li><strong>Informes PDF Profesionales:</strong> Informes detallados con gráficos y resúmenes</li>
+        <li><strong>Exportación CSV:</strong> Todos los datos para Excel o software de contabilidad</li>
+        <li><strong>Recordatorios Diarios:</strong> Notificación inteligente que solo se activa los días con un viaje activo — se detiene automáticamente al finalizar el viaje</li>
+      </ul>
+    </div>
+
+    <h3>¿Por Qué Elegir Spendiva?</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>📴 Funciona Sin Conexión</h4>
+        <p>Sin internet. Rastrea gastos en cualquier lugar sin cargos de roaming.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🔒 Sin Inicio de Sesión</h4>
+        <p>Tus datos permanecen en tu dispositivo. Sin cuenta, sin nube — privacidad completa.</p>
+      </div>
+      <div class="feature-card">
+        <h4>⚡ Entrada en 3 Segundos</h4>
+        <p>Agrega gastos en segundos con diseño intuitivo y teclado numérico personalizado.</p>
+      </div>
+      <div class="feature-card">
+        <h4>💱 195+ Monedas</h4>
+        <p>Soporte completo de tipos de cambio con conversión automática a tu moneda local.</p>
+      </div>
+      <div class="feature-card">
+        <h4>👥 División de Costos</h4>
+        <p>Divide gastos entre compañeros — hasta 4 gratis, ilimitado con Pro.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🗂️ Organización de Viajes</h4>
+        <p>Gestiona múltiples viajes con apodos y rangos de fechas. Archiva viajes completados.</p>
+      </div>
+      <div class="feature-card">
+        <h4>💳 Métodos de Pago</h4>
+        <p>Rastrea gastos personales y corporativos por separado (Pro).</p>
+      </div>
+      <div class="feature-card">
+        <h4>📊 Informes Detallados</h4>
+        <p>Desgloses diarios, semanales y mensuales con análisis de categorías.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🔔 Recordatorios Inteligentes</h4>
+        <p>Notificación diaria — solo activa los días con un viaje activo (Pro).</p>
+      </div>
+      <div class="feature-card">
+        <h4>📱 Optimizado para iPad</h4>
+        <p>Diseños de pantalla dividida específicamente para iPad.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🌐 4 Idiomas</h4>
+        <p>Inglés, español, alemán y francés — nombres de países en tu idioma.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🇨🇭 Made in Switzerland</h4>
+        <p>Desarrollado con precisión suiza. Privacidad primero, confiable, para viajeros reales.</p>
+      </div>
+    </div>
+
+    <div class="disclaimer-box">
+      <strong>⚠️ Descargo de Responsabilidad</strong>
+      <p><strong>Uso Bajo Su Propio Riesgo:</strong> Spendiva se proporciona "tal cual" sin garantías. El desarrollador no es responsable de daños, pérdidas o problemas derivados del uso de la aplicación.</p>
+      <p><strong>Tipos de Cambio:</strong> Las tasas son estimaciones y deben verificarse independientemente para decisiones financieras.</p>
+      <p><strong>Responsabilidad del Usuario:</strong> Usted es el único responsable de la precisión de sus datos y de realizar copias de seguridad.</p>
+    </div>
+
+    <a href="https://apps.apple.com/app/spendiva/id6753644966" class="button">Descargar en el App Store</a>
+  </div>
+
+  <!-- ── FRENCH ── -->
+  <div class="lang lang-fr hidden">
+    <h2>Spendiva — Suivi Intelligent des Dépenses de Voyage</h2>
+    <p>Suivez vos dépenses de voyage sans effort. Idéal pour organiser les dépenses de voyage, partager les coûts avec vos compagnons de route et gérer plusieurs devises — entièrement hors ligne et sans compte.</p>
+
+    <div class="highlight-box">
+      <strong>🌍 Entièrement Hors Ligne &bull; Sans Internet &bull; Sans Compte</strong>
+      <p>Spendiva fonctionne entièrement hors ligne pendant vos voyages. Pas de frais d'itinérance, pas de connexion internet nécessaire. Vos données restent 100% privées et sécurisées sur votre appareil — jamais téléchargées.</p>
+    </div>
+
+    <h3>Parfait Pour</h3>
+    <ul>
+      <li>Les voyageurs solo suivant leurs dépenses de vacances</li>
+      <li>Les groupes partageant les coûts en voyage</li>
+      <li>Les voyageurs d'affaires gérant leurs notes de frais <span class="pro-badge">PRO</span></li>
+      <li>Les nomades numériques travaillant dans plusieurs pays</li>
+      <li>Les familles gérant leur budget de vacances</li>
+      <li>Toute personne voyageant à l'international avec plusieurs devises</li>
+    </ul>
+
+    <h3>Fonctionnalités Clés</h3>
+    <ul>
+      <li><strong>Entièrement Hors Ligne :</strong> Fonctionne partout — sans internet, sans frais d'itinérance</li>
+      <li><strong>Sans Connexion :</strong> Toutes les données stockées localement, jamais dans le cloud</li>
+      <li><strong>Saisie en 3 Secondes :</strong> Touchez la catégorie → entrez le montant → terminé</li>
+      <li><strong>6 Catégories de Dépenses :</strong> Repas, Transport, Hébergement, Loisirs, Café, Shopping — avec sous-catégories détaillées</li>
+      <li><strong>Partage des Dépenses :</strong> Partagez avec jusqu'à 4 personnes (gratuit) ou illimité <span class="pro-badge">PRO</span></li>
+      <li><strong>Méthodes de Paiement :</strong> Personnel (gratuit) et Professionnel <span class="pro-badge">PRO</span></li>
+      <li><strong>Multi-Devise par Dépense</strong> <span class="pro-badge">PRO</span> : Saisissez des dépenses dans n'importe quelle devise avec conversion automatique</li>
+      <li><strong>Flexibilité des Dates :</strong> Enregistrez des dépenses pour aujourd'hui, hier ou toute date personnalisée</li>
+      <li><strong>Gestion des Voyages :</strong> Créez, modifiez et archivez des voyages avec plages de dates et surnoms optionnels</li>
+      <li><strong>195+ Devises :</strong> Support complet avec conversion aux taux de change vers votre devise locale</li>
+      <li><strong>Tableau de Bord :</strong> Rapports de dépenses journaliers, hebdomadaires et mensuels</li>
+      <li><strong>Répartition par Catégorie :</strong> Graphiques circulaires montrant les tendances de dépenses</li>
+      <li><strong>Sous-catégories :</strong> Appui long sur une catégorie pour plus de détails</li>
+      <li><strong>Notes :</strong> Ajoutez de courtes notes à chaque dépense</li>
+      <li><strong>Édition à Tout Moment :</strong> Glissez sur une dépense pour modifier montant, date, note ou partage</li>
+      <li><strong>Export PDF</strong> <span class="pro-badge">PRO</span> : Rapports professionnels avec graphiques et détails de paiement</li>
+      <li><strong>Export CSV</strong> <span class="pro-badge">PRO</span> : Exportez toutes les données pour Excel ou logiciel de comptabilité</li>
+      <li><strong>Rappels Quotidiens</strong> <span class="pro-badge">PRO</span> : Notification quotidienne pour saisir vos dépenses — uniquement active les jours de voyage actif</li>
+      <li><strong>Noms de Pays Localisés :</strong> Pays et destinations affichés dans la langue de votre appareil</li>
+      <li><strong>Optimisé pour iPad :</strong> Beaux layouts en écran partagé pour grands écrans</li>
+      <li><strong>4 Langues :</strong> Anglais, espagnol, allemand et français avec formats de date et monnaie localisés</li>
+      <li><strong>Made in Switzerland 🇨🇭</strong></li>
+    </ul>
+
+    <div class="note">
+      <strong>Avertissement sur les Taux de Change :</strong> Les taux de change sont des estimations approximatives basées sur des données historiques (mars 2026) et doivent être vérifiés indépendamment avant toute décision financière. Le développeur n'est pas responsable des pertes financières résultant de taux inexacts.
+    </div>
+    <div class="note">
+      <strong>Responsabilité des Données :</strong> Les utilisateurs sont seuls responsables de la sauvegarde de leurs données de dépenses. Le développeur décline toute responsabilité en cas de perte de données. Exportez vos données régulièrement (fonction Pro) pour maintenir des sauvegardes.
+    </div>
+
+    <div class="pro-section">
+      <h3>🌟 Passer à Spendiva Pro</h3>
+      <p><strong>Achat unique &bull; Accès à vie</strong></p>
+      <p>Débloquez des fonctionnalités professionnelles avec un seul achat — sans abonnement, sans frais récurrents :</p>
+      <ul>
+        <li><strong>Dépenses Multi-Devises :</strong> Saisissez des dépenses dans n'importe quelle devise avec conversion automatique</li>
+        <li><strong>Partage Illimité :</strong> Partagez avec 5+ personnes (gratuit : max 4)</li>
+        <li><strong>Suivi des Paiements Professionnels :</strong> Séparez dépenses professionnelles et personnelles</li>
+        <li><strong>Rapports PDF Professionnels :</strong> Rapports détaillés avec graphiques et résumés</li>
+        <li><strong>Export CSV :</strong> Toutes les données pour Excel ou logiciel de comptabilité</li>
+        <li><strong>Rappels Quotidiens :</strong> Notification intelligente uniquement active les jours de voyage actif — s'arrête automatiquement à la fin du voyage</li>
+      </ul>
+    </div>
+
+    <h3>Pourquoi Choisir Spendiva ?</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>📴 Hors Ligne</h4>
+        <p>Sans internet. Suivez vos dépenses partout sans frais d'itinérance.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🔒 Sans Connexion</h4>
+        <p>Vos données restent sur votre appareil. Sans compte, sans cloud — confidentialité totale.</p>
+      </div>
+      <div class="feature-card">
+        <h4>⚡ Saisie en 3 Secondes</h4>
+        <p>Ajoutez des dépenses en secondes avec un design intuitif et clavier numérique personnalisé.</p>
+      </div>
+      <div class="feature-card">
+        <h4>💱 195+ Devises</h4>
+        <p>Support complet des taux de change avec conversion automatique vers votre devise locale.</p>
+      </div>
+      <div class="feature-card">
+        <h4>👥 Partage des Coûts</h4>
+        <p>Partagez facilement les dépenses — jusqu'à 4 personnes gratuitement, illimité avec Pro.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🗂️ Organisation des Voyages</h4>
+        <p>Gérez plusieurs voyages avec surnoms et plages de dates. Archivez les voyages terminés.</p>
+      </div>
+      <div class="feature-card">
+        <h4>💳 Méthodes de Paiement</h4>
+        <p>Suivez dépenses personnelles et professionnelles séparément (Pro).</p>
+      </div>
+      <div class="feature-card">
+        <h4>📊 Rapports Détaillés</h4>
+        <p>Répartitions journalières, hebdomadaires et mensuelles avec analyse par catégorie.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🔔 Rappels Intelligents</h4>
+        <p>Notification quotidienne — uniquement active les jours avec un voyage actif (Pro).</p>
+      </div>
+      <div class="feature-card">
+        <h4>📱 Optimisé pour iPad</h4>
+        <p>Beaux layouts en écran partagé spécialement conçus pour iPad.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🌐 4 Langues</h4>
+        <p>Anglais, espagnol, allemand et français — noms de pays dans votre langue.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🇨🇭 Made in Switzerland</h4>
+        <p>Conçu avec la précision suisse. Confidentialité d'abord, fiable, pour les vrais voyageurs.</p>
+      </div>
+    </div>
+
+    <div class="disclaimer-box">
+      <strong>⚠️ Avertissement Important</strong>
+      <p><strong>Utilisation à Vos Propres Risques :</strong> Spendiva est fourni "tel quel" sans garantie. Le développeur n'est pas responsable des dommages, pertes ou problèmes résultant de l'utilisation de l'application.</p>
+      <p><strong>Taux de Change :</strong> Les taux sont des estimations et doivent être vérifiés indépendamment pour les décisions financières.</p>
+      <p><strong>Responsabilité de l'Utilisateur :</strong> Vous êtes seul responsable de l'exactitude de vos données et de leur sauvegarde.</p>
+    </div>
+
+    <a href="https://apps.apple.com/app/spendiva/id6753644966" class="button">Télécharger sur l'App Store</a>
+  </div>
+
+</div><!-- /home -->
+
+<!-- ════════════════════════════ SUPPORT ════════════════════════════ -->
+<div id="support" class="section hidden">
+
+  <!-- English -->
+  <div class="lang lang-en">
+    <h2>Support &amp; Help</h2>
+    <p>Need help with Spendiva? We're here to assist you.</p>
+    <h3>Contact</h3>
+    <p>Email: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+    <p>We typically respond within 24–48 hours, though response times are not guaranteed.</p>
+    <h3>Frequently Asked Questions</h3>
+    <div class="faq-item">
+      <strong>Does Spendiva work offline?</strong>
+      Yes! All data is stored locally on your device. No internet connection is needed — ever. Your data never leaves your phone.
+    </div>
+    <div class="faq-item">
+      <strong>Can I have multiple trips?</strong>
+      Yes. Create as many trips as you want. Tap <em>Switch Trip</em> in Settings to switch between them. Completed trips can be archived and reviewed any time.
+    </div>
+    <div class="faq-item">
+      <strong>How does currency conversion work?</strong>
+      When creating a trip, you set the exchange rate between your home currency and the trip currency. The app uses this rate to convert all expenses. With Spendiva Pro you can also enter individual expenses in any currency with automatic conversion.
+    </div>
+    <div class="faq-item">
+      <strong>What does Spendiva Pro include?</strong>
+      Pro unlocks: multi-currency expense entry, unlimited expense splitting (5+ people), corporate payment tracking, professional PDF reports, CSV export, and daily expense reminders. It's a one-time purchase with lifetime access — no subscription.
+    </div>
+    <div class="faq-item">
+      <strong>How do I split expenses?</strong>
+      When entering an expense, use the people icons to split the cost. Tap 1–4 for quick selection, or tap + to enter a custom number. Splitting with 5 or more people requires Spendiva Pro.
+    </div>
+    <div class="faq-item">
+      <strong>Can I track business vs. personal expenses?</strong>
+      Yes — Spendiva Pro includes a Corporate payment method that lets you separate business expenses from personal ones, making reimbursement tracking much easier.
+    </div>
+    <div class="faq-item">
+      <strong>How do I add details to an expense?</strong>
+      Swipe left on any expense in the list to edit the amount, date, note, subcategory, or split count. Long-press a category when adding an expense to select a subcategory right away.
+    </div>
+    <div class="faq-item">
+      <strong>How do I backup my data?</strong>
+      With Spendiva Pro, export to CSV or PDF from Settings. Exported files can be saved to your device or cloud storage. We recommend exporting regularly.
+    </div>
+    <div class="faq-item">
+      <strong>How do daily reminders work?</strong>
+      Enable a daily notification in Settings → Daily Reminder. The reminder fires at your chosen time — but only on days when you have an active trip. It stops automatically when your trip ends, so you'll never receive reminders between trips. Requires Spendiva Pro.
+    </div>
+    <div class="faq-item">
+      <strong>What happens when I archive a trip?</strong>
+      Archived trips are moved to a separate section and can no longer be selected as active. You can still view them, export their data, or restore them at any time.
+    </div>
+    <div class="faq-item">
+      <strong>Why is the note limited to 25 characters?</strong>
+      The limit ensures notes display correctly in PDF exports and reports. Use concise descriptions like "La Trattoria" or "Museum ticket".
+    </div>
+    <div class="faq-item">
+      <strong>Does my Pro purchase work offline?</strong>
+      Yes. Once verified, your Pro status is cached on your device and works fully in airplane mode.
+    </div>
+  </div>
+
+  <!-- German -->
+  <div class="lang lang-de hidden">
+    <h2>Support &amp; Hilfe</h2>
+    <p>Benötigen Sie Hilfe mit Spendiva? Wir sind für Sie da.</p>
+    <h3>Kontakt</h3>
+    <p>E-Mail: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+    <p>Wir antworten normalerweise innerhalb von 24–48 Stunden, Antwortzeiten sind jedoch nicht garantiert.</p>
+    <h3>Häufig gestellte Fragen</h3>
+    <div class="faq-item">
+      <strong>Funktioniert Spendiva offline?</strong>
+      Ja! Alle Daten werden lokal auf Ihrem Gerät gespeichert. Es wird nie eine Internetverbindung benötigt.
+    </div>
+    <div class="faq-item">
+      <strong>Kann ich mehrere Reisen haben?</strong>
+      Ja. Erstellen Sie beliebig viele Reisen. Tippen Sie unter Einstellungen auf <em>Reise wechseln</em>. Abgeschlossene Reisen können archiviert und jederzeit eingesehen werden.
+    </div>
+    <div class="faq-item">
+      <strong>Wie funktioniert die Währungsumrechnung?</strong>
+      Beim Erstellen einer Reise legen Sie den Wechselkurs zwischen Ihrer Heimatwährung und der Reisewährung fest. Mit Spendiva Pro können Sie einzelne Ausgaben auch in beliebigen Währungen mit automatischer Umrechnung eingeben.
+    </div>
+    <div class="faq-item">
+      <strong>Was beinhaltet Spendiva Pro?</strong>
+      Pro schaltet frei: Multi-Währungs-Ausgaben, unbegrenzte Ausgabenaufteilung (5+ Personen), Firmenzahlungsverfolgung, professionelle PDF-Berichte, CSV-Export und tägliche Erinnerungen. Einmaliger Kauf mit lebenslangem Zugriff.
+    </div>
+    <div class="faq-item">
+      <strong>Wie teile ich Ausgaben auf?</strong>
+      Verwenden Sie beim Eingeben einer Ausgabe die Personensymbole. Tippen Sie 1–4 für Schnellauswahl oder + für eine benutzerdefinierte Anzahl. Das Aufteilen mit 5 oder mehr Personen erfordert Spendiva Pro.
+    </div>
+    <div class="faq-item">
+      <strong>Wie funktionieren die täglichen Erinnerungen?</strong>
+      Aktivieren Sie unter Einstellungen → Tägliche Erinnerung eine Benachrichtigung. Sie wird nur an Tagen ausgelöst, an denen Sie eine aktive Reise haben — und endet automatisch, wenn die Reise endet. Erfordert Spendiva Pro.
+    </div>
+    <div class="faq-item">
+      <strong>Funktioniert mein Pro-Kauf offline?</strong>
+      Ja. Nach der Überprüfung wird Ihr Pro-Status auf dem Gerät zwischengespeichert und funktioniert vollständig im Flugmodus.
+    </div>
+  </div>
+
+  <!-- Spanish -->
+  <div class="lang lang-es hidden">
+    <h2>Soporte y Ayuda</h2>
+    <p>¿Necesitas ayuda con Spendiva? Estamos aquí para asistirte.</p>
+    <h3>Contacto</h3>
+    <p>Email: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+    <p>Normalmente respondemos en 24–48 horas, aunque los tiempos de respuesta no están garantizados.</p>
+    <h3>Preguntas Frecuentes</h3>
+    <div class="faq-item">
+      <strong>¿Funciona Spendiva sin conexión?</strong>
+      ¡Sí! Todos los datos se almacenan localmente en tu dispositivo. No se necesita internet — nunca.
+    </div>
+    <div class="faq-item">
+      <strong>¿Puedo tener múltiples viajes?</strong>
+      Sí. Crea todos los viajes que quieras. Toca <em>Cambiar Viaje</em> en Ajustes. Los viajes completados se pueden archivar y consultar en cualquier momento.
+    </div>
+    <div class="faq-item">
+      <strong>¿Qué incluye Spendiva Pro?</strong>
+      Pro desbloquea: gastos multi-moneda, división ilimitada (5+ personas), seguimiento de pagos corporativos, informes PDF profesionales, exportación CSV y recordatorios diarios. Compra única con acceso de por vida.
+    </div>
+    <div class="faq-item">
+      <strong>¿Cómo funcionan los recordatorios diarios?</strong>
+      Activa una notificación diaria en Ajustes → Recordatorio Diario. Solo se envía los días en que tienes un viaje activo — se detiene automáticamente cuando termina el viaje. Requiere Spendiva Pro.
+    </div>
+    <div class="faq-item">
+      <strong>¿Mi compra Pro funciona sin conexión?</strong>
+      Sí. Una vez verificado, tu estado Pro se guarda en el dispositivo y funciona completamente en modo avión.
+    </div>
+  </div>
+
+  <!-- French -->
+  <div class="lang lang-fr hidden">
+    <h2>Support &amp; Aide</h2>
+    <p>Besoin d'aide avec Spendiva ? Nous sommes là pour vous aider.</p>
+    <h3>Contact</h3>
+    <p>Email : <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+    <p>Nous répondons généralement sous 24–48 heures, sans garantie de délai.</p>
+    <h3>Questions Fréquentes</h3>
+    <div class="faq-item">
+      <strong>Spendiva fonctionne-t-il hors ligne ?</strong>
+      Oui ! Toutes les données sont stockées localement sur votre appareil. Aucune connexion internet n'est nécessaire — jamais.
+    </div>
+    <div class="faq-item">
+      <strong>Puis-je avoir plusieurs voyages ?</strong>
+      Oui. Créez autant de voyages que vous voulez. Touchez <em>Changer de voyage</em> dans les Réglages. Les voyages terminés peuvent être archivés et consultés à tout moment.
+    </div>
+    <div class="faq-item">
+      <strong>Que comprend Spendiva Pro ?</strong>
+      Pro débloque : dépenses multi-devises, partage illimité (5+ personnes), suivi des paiements professionnels, rapports PDF professionnels, export CSV et rappels quotidiens. Achat unique avec accès à vie.
+    </div>
+    <div class="faq-item">
+      <strong>Comment fonctionnent les rappels quotidiens ?</strong>
+      Activez une notification dans Réglages → Rappel Quotidien. Elle se déclenche uniquement les jours où vous avez un voyage actif — et s'arrête automatiquement à la fin du voyage. Nécessite Spendiva Pro.
+    </div>
+    <div class="faq-item">
+      <strong>Mon achat Pro fonctionne-t-il hors ligne ?</strong>
+      Oui. Une fois vérifié, votre statut Pro est mis en cache sur l'appareil et fonctionne entièrement en mode avion.
+    </div>
+  </div>
+
+</div><!-- /support -->
+
+<!-- ════════════════════════════ PRIVACY ════════════════════════════ -->
+<div id="privacy" class="section hidden privacy-section">
+
+  <!-- English -->
+  <div class="lang lang-en">
+    <h2>Privacy Policy</h2>
+    <p><em>Last updated: April 2026</em></p>
+    <h3>Data Collection</h3>
+    <p>Spendiva does not collect, transmit, or store any personal data on external servers. All expense data, trip information, and settings are stored exclusively on your device using Apple's SwiftData framework.</p>
+    <h3>No Account Required</h3>
+    <p>Spendiva requires no account, login, or registration of any kind. You can use all features without providing any personal information.</p>
+    <h3>Local Storage Only</h3>
+    <p>All data (trips, expenses, settings, preferences) is stored locally on your device. It is never uploaded to any server, shared with third parties, or synchronized to the cloud.</p>
+    <h3>In-App Purchases</h3>
+    <p>Spendiva Pro is processed entirely through Apple's App Store and StoreKit. We do not handle, store, or access any payment information. Apple's privacy policy governs all purchase transactions.</p>
+    <h3>Notifications</h3>
+    <p>If you enable daily reminders (Pro feature), Spendiva uses iOS's local notification system. No data is sent externally — notifications are scheduled entirely on your device.</p>
+    <h3>Analytics &amp; Crash Reporting</h3>
+    <p>Spendiva does not use any third-party analytics, tracking, or crash reporting SDKs. No usage data is collected or sent anywhere.</p>
+    <h3>Contact</h3>
+    <p>Questions about privacy? Contact us at <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a>.</p>
+  </div>
+
+  <!-- German -->
+  <div class="lang lang-de hidden">
+    <h2>Datenschutzrichtlinie</h2>
+    <p><em>Zuletzt aktualisiert: April 2026</em></p>
+    <h3>Datenerhebung</h3>
+    <p>Spendiva erhebt, überträgt oder speichert keine personenbezogenen Daten auf externen Servern. Alle Ausgabendaten, Reiseinformationen und Einstellungen werden ausschließlich auf Ihrem Gerät gespeichert.</p>
+    <h3>Keine Anmeldung Erforderlich</h3>
+    <p>Spendiva erfordert kein Konto, keine Anmeldung und keine Registrierung. Sie können alle Funktionen nutzen, ohne persönliche Informationen anzugeben.</p>
+    <h3>Nur Lokale Speicherung</h3>
+    <p>Alle Daten werden lokal auf Ihrem Gerät gespeichert. Sie werden niemals auf einen Server hochgeladen, an Dritte weitergegeben oder mit der Cloud synchronisiert.</p>
+    <h3>In-App-Käufe</h3>
+    <p>Spendiva Pro wird vollständig über Apples App Store abgewickelt. Wir speichern oder verarbeiten keine Zahlungsinformationen.</p>
+    <h3>Benachrichtigungen</h3>
+    <p>Wenn Sie tägliche Erinnerungen aktivieren (Pro-Funktion), verwendet Spendiva das lokale Benachrichtigungssystem von iOS. Es werden keine Daten extern gesendet.</p>
+    <h3>Kontakt</h3>
+    <p>Fragen zum Datenschutz? Kontaktieren Sie uns unter <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a>.</p>
+  </div>
+
+  <!-- Spanish -->
+  <div class="lang lang-es hidden">
+    <h2>Política de Privacidad</h2>
+    <p><em>Última actualización: abril de 2026</em></p>
+    <h3>Recopilación de Datos</h3>
+    <p>Spendiva no recopila, transmite ni almacena datos personales en servidores externos. Todos los datos se almacenan exclusivamente en tu dispositivo.</p>
+    <h3>Sin Cuenta Requerida</h3>
+    <p>Spendiva no requiere cuenta, inicio de sesión ni registro de ningún tipo.</p>
+    <h3>Almacenamiento Solo Local</h3>
+    <p>Todos los datos se almacenan localmente en tu dispositivo. Nunca se suben a ningún servidor ni se comparten con terceros.</p>
+    <h3>Compras Dentro de la App</h3>
+    <p>Spendiva Pro se procesa completamente a través del App Store de Apple. No manejamos ni almacenamos información de pago.</p>
+    <h3>Notificaciones</h3>
+    <p>Si activas los recordatorios diarios (función Pro), Spendiva usa el sistema de notificaciones locales de iOS. No se envían datos externamente.</p>
+    <h3>Contacto</h3>
+    <p>¿Preguntas sobre privacidad? Contáctanos en <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a>.</p>
+  </div>
+
+  <!-- French -->
+  <div class="lang lang-fr hidden">
+    <h2>Politique de Confidentialité</h2>
+    <p><em>Dernière mise à jour : avril 2026</em></p>
+    <h3>Collecte de Données</h3>
+    <p>Spendiva ne collecte, ne transmet ni ne stocke aucune donnée personnelle sur des serveurs externes. Toutes les données sont stockées exclusivement sur votre appareil.</p>
+    <h3>Sans Compte Requis</h3>
+    <p>Spendiva ne nécessite aucun compte, connexion ou inscription d'aucune sorte.</p>
+    <h3>Stockage Local Uniquement</h3>
+    <p>Toutes les données sont stockées localement sur votre appareil. Elles ne sont jamais téléchargées sur un serveur ni partagées avec des tiers.</p>
+    <h3>Achats Intégrés</h3>
+    <p>Spendiva Pro est entièrement traité via l'App Store d'Apple. Nous ne gérons ni ne stockons aucune information de paiement.</p>
+    <h3>Notifications</h3>
+    <p>Si vous activez les rappels quotidiens (fonctionnalité Pro), Spendiva utilise le système de notifications locales d'iOS. Aucune donnée n'est envoyée à l'extérieur.</p>
+    <h3>Contact</h3>
+    <p>Questions sur la confidentialité ? Contactez-nous à <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a>.</p>
+  </div>
+
+</div><!-- /privacy -->
+
+</div><!-- /container -->
+
+<!-- ════════════════════════════ FOOTER ════════════════════════════ -->
+<footer>
+  <p>© 2026 Spendiva by Andres Wetzel &bull; <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a> &bull; Made in Switzerland 🇨🇭</p>
+  <p style="font-size: 0.85em; margin-top: 10px;">
+    Spendiva is provided "as is" without warranties. Exchange rates are estimates only and should be independently verified.
+    Users are responsible for data accuracy and backups. Developer not liable for damages or data loss.
+  </p>
+</footer>
 
 </body>
 </html>
